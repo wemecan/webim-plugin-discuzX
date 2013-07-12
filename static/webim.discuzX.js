@@ -2048,8 +2048,8 @@ model("history", {
  * Copyright (c) 2013 Arron
  * Released under the MIT, BSD, and GPL Licenses.
  *
- * Date: Fri Jul 12 15:44:11 2013 +0800
- * Commit: a12e4915d2211734d61686d79ee5d30106a9c806
+ * Date: Fri Jul 12 19:56:03 2013 +0800
+ * Commit: 096b21e744741d1e3e1d401a5ac195f892724a4b
  */
 (function(window,document,undefined){
 
@@ -5264,7 +5264,7 @@ widget("room",{
 			var a = el.firstChild;
 			addEvent(a, "click",function(e){
 				preventDefault(e);
-				self.d("select", [info]);
+				self.trigger("select", [info]);
 				this.blur();
 			});
 			ul.appendChild(el);
