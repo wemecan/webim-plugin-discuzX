@@ -1,6 +1,6 @@
 <?php
 
-$im_version = '@VERSION';
+$im_version = '3.0';
 
 if ( !defined( 'WEBIM_PATH' ) ) 
 	define( 'WEBIM_PATH', dirname( __FILE__ ) . '/' );
