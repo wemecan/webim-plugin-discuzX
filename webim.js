@@ -34,7 +34,7 @@
 		soundUrls: soundUrls
 	}), im = ui.im;
 
-	//if( _IMC.user ) im.user( _IMC.user );
+	if( _IMC.user ) im.setUser( _IMC.user );
 	if( _IMC.menu ) ui.addApp("menu", { "data": _IMC.menu } );
 	if( _IMC.enable_shortcut ) ui.layout.addShortcut( _IMC.menu );
 
