@@ -5,8 +5,8 @@
  * Copyright (c) 2013 Arron
  * Released under the MIT, BSD, and GPL Licenses.
  *
- * Date: Fri Jul 12 14:49:11 2013 +0800
- * Commit: 2e8690b81bb330426e415e49bd86643a11bd5055
+ * Date: Mon Aug 19 00:05:48 2013 +0800
+ * Commit: 744317cb00a57ed590f1542ea3d130237e00c0a3
  */
 (function(window, document, undefined){
 
@@ -1018,7 +1018,10 @@ comet.prototype = {
 	_onClose: function( m ) {
 		var self = this;
 		self._setting();
-		self.trigger( 'close', [ m ] );
+		//Delay trigger event when reflesh web site
+		setTimeout( function(){
+			self.trigger( 'close', [ m ] );
+		}, 1000 );
 	},
 	_onData: function(data) {
 		var self = this;
@@ -1027,7 +1030,10 @@ comet.prototype = {
 	_onError: function( text ) {
 		var self = this;
 		self._setting();
-		self.trigger( 'error', [ text ] );
+		//Delay trigger event when reflesh web site
+		setTimeout( function(){
+			self.trigger( 'error', [ text ] );
+		}, 1000 );
 	},
 	_startPolling: function() {
 		var self = this;
@@ -1265,7 +1271,12 @@ function webim( element, options ) {
 
 ClassEvent.on( webim );
 
+webim.OFFLINE = 0;
+webim.BEFOREONLINE = 1;
+webim.ONLINE = 2;
+
 extend(webim.prototype, {
+	state: webim.OFFLINE,
 	_init: function() {
 		var self = this, options = self.options;
 		//Default user status info.
@@ -1304,6 +1315,7 @@ extend(webim.prototype, {
 	},
 	_ready: function( post_data ) {
 		var self = this;
+		self.state = webim.BEFOREONLINE;
 		self._unloadFun = window.onbeforeunload;
 		window.onbeforeunload = function(){
 			self._deactivate();
@@ -1312,6 +1324,7 @@ extend(webim.prototype, {
 	},
 	_go: function() {
 		var self = this, data = self.data, history = self.history, buddy = self.buddy, room = self.room;
+		self.state = webim.ONLINE;
 		history.options.userInfo = data.user;
 		var ids = [];
 		each( data.buddies, function(n, v) {
@@ -1342,6 +1355,10 @@ extend(webim.prototype, {
 	},
 	_stop: function( type, msg ){
 		var self = this;
+		if ( self.state === webim.OFFLINE ) {
+			return;
+		}
+		self.state = webim.OFFLINE;
 		window.onbeforeunload = self._unloadFun;
 		self.data.user.presence = "offline";
 		self.data.user.show = "unavailable";
@@ -1365,7 +1382,7 @@ extend(webim.prototype, {
 				if( type == "unicast" && !v["new"] ) {
 					var msg = { id: id, presence: "online" };
 					//update nick.
-					if( v.nick ) msg.nick = v.nick;
+					if( v.nick && v.to == uid ) msg.nick = v.nick;
 					online_buddies.push( msg );
 				}
 			}
@@ -1395,7 +1412,7 @@ extend(webim.prototype, {
 		data.presences && data.presences.length && self.trigger( "presence", [ data.presences ] );
 		data.statuses && data.statuses.length && self.trigger( "status", [ data.statuses ] );
 	},
-	sendMessage: function( msg ) {
+	sendMessage: function( msg, callback ) {
 		var self = this;
 		msg.ticket = self.data.connection.ticket;
 		self.trigger( "sendMessage", [ msg ] );
@@ -1404,10 +1421,12 @@ extend(webim.prototype, {
 			dataType: "jsonp",
 			cache: false,
 			url: route( "message" ),
-			data: msg
+			data: msg,
+			success: callback,
+			error: callback
 		});
 	},
-	sendStatus: function(msg){
+	sendStatus: function( msg, callback ){
 		var self = this;
 		msg.ticket = self.data.connection.ticket;
 		self.trigger( "sendStatus", [ msg ] );
@@ -1416,10 +1435,12 @@ extend(webim.prototype, {
 			dataType: "jsonp",
 			cache: false,
 			url: route( "status" ),			
-			data: msg
+			data: msg,
+			success: callback,
+			error: callback
 		});
 	},
-	sendPresence: function(msg){
+	sendPresence: function( msg, callback ){
 		var self = this;
 		msg.ticket = self.data.connection.ticket;
 		//save show status
@@ -1431,7 +1452,9 @@ extend(webim.prototype, {
 			dataType: "jsonp",
 			cache: false,
 			url: route( "presence" ),			
-			data: msg
+			data: msg,
+			success: callback,
+			error: callback
 		} );
 	},
 	//setStranger: function(ids){
@@ -1440,6 +1463,10 @@ extend(webim.prototype, {
 	//stranger_ids: [],
 	online: function( params ) {
 		var self = this, status = self.status;
+		if ( self.state !== webim.OFFLINE ) {
+			return;
+		}
+
 		var buddy_ids = [], room_ids = [], tabs = status.get("tabs"), tabIds = status.get("tabIds");
 		if(tabIds && tabIds.length && tabs){
 			each(tabs, function(k,v){
@@ -1482,7 +1509,10 @@ extend(webim.prototype, {
 	},
 	offline: function() {
 		var self = this, data = self.data;
-		//self.status.set("o", true);
+		if ( self.state === webim.OFFLINE ) {
+			return;
+		}
+		self.status.set("o", true);
 		self.connection.close();
 		self._stop("offline", "offline");
 		ajax({
@@ -1712,6 +1742,12 @@ model( "buddy", {
 	},
 	get: function( id ) {
 		return this.dataHash[ id ];
+	},
+	all: function( onlyVisible ){
+		if( onlyVisible )
+			return grep(this.data, function(a){ return a.show != "invisible" && a.presence == "online"});
+		else
+			return this.data;
 	},
 	complete: function() {
 		var self = this, data = self.dataHash, ids = [], v;
@@ -2048,8 +2084,8 @@ model("history", {
  * Copyright (c) 2013 Arron
  * Released under the MIT, BSD, and GPL Licenses.
  *
- * Date: Fri Jul 12 19:56:03 2013 +0800
- * Commit: 096b21e744741d1e3e1d401a5ac195f892724a4b
+ * Date: Wed Aug 21 23:26:35 2013 +0800
+ * Commit: fe5e4a5b6180ba3114afb4693ff3e00e3ea7beb8
  */
 (function(window,document,undefined){
 
@@ -2174,6 +2210,15 @@ function hide(obj){
 }
 function remove(obj){
 	obj && obj.parentNode && (obj.parentNode.removeChild(obj));
+}
+function html(obj, obj2){
+	var childs = obj.childNodes;
+	for( i=0;i<childs.length;i++ ) {
+		obj.removeChild(childs[i]);
+	}
+	typeof obj2 === "string" ?
+		(obj.innerHTML = obj2) :
+		obj.appendChild( obj2 );
 }
 function addEvent( obj, type, fn ) {
 	if ( obj.addEventListener ) {
@@ -2394,6 +2439,98 @@ extend(date.prototype, {
         });
     }
 });
+/**
+ * Cross domain file upload
+ *
+ * https://github.com/blueimp/jQuery-File-Upload
+ * https://github.com/bkuzmic/jquery-crossdomain-data-plugin/blob/master/jquery.crossdomain.data.js
+ *
+ */
+
+function _addEvent( obj, type, fn ) {
+	if ( obj.addEventListener ) {
+		obj.addEventListener( type, fn, false );
+	} else{
+		obj['e'+type+fn] = fn;
+		obj[type+fn] = function(){return obj['e'+type+fn]( window.event );}
+		obj.attachEvent( 'on'+type, obj[type+fn] );
+	}
+}
+function _removeEvent( obj, type, fn ) {
+	if ( obj.addEventListener ) {
+		obj.removeEventListener( type, fn, false );
+	} else{
+		obj.detachEvent( 'on'+type, obj[type+fn] );
+		obj[type+fn] = null;
+	}
+}
+
+function _remove(obj){
+	obj && obj.parentNode && (obj.parentNode.removeChild(obj));
+}
+
+function _parseJSON( data ){
+	return data = data ?
+		( window.JSON && window.JSON.parse ?
+		window.JSON.parse( data ) :
+		(new Function("return " + data))() ) :
+		data;
+}
+
+function upload( element, callback ){
+	_addEvent( element, "submit", function(e){
+		var name = "_upload_form13123";
+		element.setAttribute("target", name);
+
+		var el = document.createElement("div");
+		el.innerHTML = '<iframe name="'+name+'" id="'+name+'" style="display:none;" scrolling="no" frameborder="0"></iframe>';
+		var frm = el.firstChild;
+		document.body.appendChild( el );
+
+		if (window.postMessage) {
+			var _cb = function(e){
+				_removeEvent(window, "message", _cb);
+				_remove( el );
+				callback && callback( _parseJSON( e.data ) );
+			};
+			_addEvent(window, "message", _cb);
+		} else {
+			var loaded = false;
+			_addEvent( frm, "load", function(e){
+				if( loaded ) {
+					if( !window.attachEvent )
+						retrieveData();
+				} else {
+					loaded = true;
+					frm.contentWindow.location = "about:blank";
+				}
+			});
+			if( window.attachEvent ) {
+				frm.onreadystatechange = function(){
+					if( loaded ) {
+						retrieveData();
+					}
+				}
+			}
+		}
+		function retrieveData(){
+			try {
+				var data = frm.contentWindow.name || null;
+				if (data != null) {
+					_remove( el );
+					callback && callback( _parseJSON( data ) );
+				} else {
+					throw new Error("Empty data");
+				}
+			} catch (e) {
+				_remove( el );
+				callback && callback( {error: "Retrieve data error"} );
+			}
+		}
+	} );
+}
+
+
 var sound = (function(){
         var playSound = true;
         var play = function(url){
@@ -2787,11 +2924,10 @@ widget("window", {
 },
 {
 	html: function(obj){
-		return this.$.content.appendChild(obj);
+		html( this.$.content, obj );
 	},
 	subHeader: function(obj){
-		this.$.subHeader.innerHTML = "";
-		return this.$.subHeader.appendChild(obj);
+		html( this.$.subHeader, obj );
 	},
 	_init: function(element, options){
 		var self = this, options = self.options, $ = self.$;
@@ -3046,7 +3182,7 @@ app("layout", function( options ) {
 	  , buddyUI = self.buddy
 	  , room = im.room;
 
-	var layout = new webimUI.layout( null,extend({
+	var layout = ui.layout = new webimUI.layout( null,extend({
 		chatAutoPop: im.setting.get("msg_auto_pop")
 	}, options, {
 		ui: ui
@@ -3270,7 +3406,8 @@ widget("layout",{
 	</div>\
 	<em class="webim-icon" style="background-image:url(<%=icon%>)"></em>\
 	</a>\
-	</div>'
+	</div>',
+	chatApp: "chat"
 },{
 	_init: function(element, options){
 		var self = this, options = self.options;
@@ -3621,34 +3758,34 @@ widget("layout",{
 		var self = this;
 		if(self.chat(type, id))return;
 
-		var widget = self.options.ui.addApp("chat", extend({
-			id: id, 
-			type: type, 
-			nick: nick, 
-			winOptions: winOptions
-		}, chatOptions ));
-
 		var  panels 	= self.panels;
-		id = _id_with_type(type, id);
-		panels[id] = widget;
+		var panelId = _id_with_type(type, id);
 
-		var win = self.tabs[id] = new webimUI.window(null, extend({
+		var win = self.tabs[panelId] = new webimUI.window(null, extend({
 			isMinimize: self.activeTabId || !self.options.chatAutoPop,
 			tabWidth: self.tabWidth -2,
 			titleVisibleLength: 9
 		}, winOptions))
 			.bind("close", function(){ 
-				self._onChatClose(id)
+				self._onChatClose(panelId)
 			})
 			.bind("displayStateChange", function(e, state){ 
-				self._onChatChange(id,state)
+				self._onChatChange(panelId,state)
 			});
-		self.tabIds.push(id);
+
+		var widget = self.options.ui.addApp(self.options.chatApp, extend({
+			id: id, 
+			type: type, 
+			nick: nick, 
+			window: win
+		}, chatOptions ));
+
+		panels[panelId] = widget;
+		self.tabIds.push(panelId);
 		self.$.tabs.insertBefore(win.element, self.$.tabs.firstChild);
-		widget.setWindow( win );
-		!win.isMinimize() && self._changeActive(id);
+		!win.isMinimize() && self._changeActive(panelId);
 		self._fitUI();
-		//else self.focusChat(id);
+		//else self.focusChat(panelId);
 	},
 	removeChat: function(type, id){
 		//ids = idsArray(ids);
@@ -3796,17 +3933,21 @@ widget("history", {
 
 var autoLinkUrls = (function(){
 	var attrStr;
-	function filterUrl(a, b, c){
-		return '<a href="' + (b=='www.' ? ('http://' + a) : a) + '"' + attrStr + '>' + a + '</a>'
+	function filterUrl(a, b, c, _x, d, e, _z, f){
+		if( b )
+			return '<a href="' + (b=='www.' ? ('http://' + a) : a) + '"' + attrStr + '>' + a + '</a>'
+		if( _x )
+			return '<a class="webim-img" href="'+e+'"'+attrStr+'><img src="'+(f || e)+'" alt="'+(d || e)+'"/></a>';
+		return '<a class="webim-file" href="'+e+'"'+attrStr+'>'+(d || e)+'</a>';
 	}
-		function serialize(key, val){
-			attrStr += ' ' + key + '="' + val + '"';
-		}
-		return function(str, attrs){
-			attrStr = "";
-			attrs && isObject(attrs) && each(attrs, serialize);
-			return str.replace(/(https?:\/\/|www\.)([^\s<]+)/ig, filterUrl);
-		};
+	function serialize(key, val){
+		attrStr += ' ' + key + '="' + val + '"';
+	}
+	return function(str, attrs){
+		attrStr = "";
+		attrs && isObject(attrs) && each(attrs, serialize);
+		return str.replace(/(https?:\/\/|www\.)([^\s<]+)|(\!?)\[([^\]]*)\]\(([^\)]+)\)(\(([^\)]+)\))?/ig, filterUrl);
+	};
 })();
 
 webimUI.history.defaults.parseMsg = true;
@@ -3920,6 +4061,42 @@ extend(webimUI.emot, {
             return str;
         }
 });
+
+//image/jpeg,image/jpg,image/gif,image/png,thumbnailUrl
+
+widget("upload", {
+	template: '<div class="webim-upload ui-widget-content"><form class="ui-helper-clearfix" id=":form" method="POST" enctype="multipart/form-data" encoding="multipart/form-data"><input id=":input" type="file" name="files" /><input class="ui-state-default ui-corner-all webim-upload-submit" type="submit" value="<%=upload%>" /></form></div>'
+},{
+	_init: function(options){
+		var self = this, element = self.element;
+		self.$.form.setAttribute( "action", route("upload") );
+		upload( self.$.form, function( data ){
+			data = data && data[0];
+			if( data ) {
+				if( !data.url || data.error ) {
+					alert( data.error || 'Upload error' );
+				} else {
+					var markup = ["image/jpeg","image/jpg","image/gif","image/png"].indexOf(data.type) == -1 
+						? "" : "!";
+					markup += "["+(data.name || "").replace(/\[|\]/ig, "")+"]("+data.url+")";
+					if( data.thumbnailUrl )
+						markup += "("+data.thumbnailUrl+")";
+					try{self.$.input.value = "";} catch(e){}
+					self.toggle();
+					self.trigger('upload', markup);
+				}
+			} else {
+				alert("Upload error");
+			}
+
+		} );
+	},
+	toggle: function(){
+		toggleClass(this.element, "webim-upload-show");
+	}
+});
+
+
 //
 /* ui.chat:
  *
@@ -4049,8 +4226,8 @@ widget("chat",{
 	<a id=":userPic" class="webim-user-pic ui-corner-all ui-state-active" href="#id"><img width="50" height="50" src="" defaultsrc="" onerror="var d=this.getAttribute(\'defaultsrc\');if(d && this.src!=d)this.src=d;" class="ui-corner-all"></a> \
 	<span id=":userStatus" title="" class="webim-user-status">&nbsp;</span> \
 	</div></div>',
-	template:'<div class="webim-chat webim-box webim-flex"> \
-	<div class="webim-chat-notice-wrap"><div id=":notice" class="webim-chat-notice ui-state-highlight"></div></div> \
+	template:'<div id=":container" class="webim-chat webim-box webim-flex"> \
+	<div class="webim-chat-notice-wrap1"><div class="webim-chat-notice-wrap"><div id=":notice" class="webim-chat-notice ui-state-highlight"></div></div> </div>\
 	<div id=":content" class="webim-chat-content webim-flex webim-box-h"> \
 	<div id=":sidebar" class="webim-chat-sidebar webim-box"></div><div class="webim-flex webim-box"><div id=":main" class="webim-chat-main webim-flex"><div id=":status" class="webim-chat-status webim-gray"></div></div></div> \
 	</div> \
@@ -4096,11 +4273,11 @@ widget("chat",{
 			self._adjustContent();
 		},0);
 	},
-	setWindow: function( win ) {
+	setWindow: function( win, notInsert ) {
 		var self = this;
 		self.window = win;
 		win.subHeader( self.header );
-		win.html( self.element );
+		!notInsert && win.html( self.element );
 		win.title( self.options.info.nick );
 		self._bindWindow();
 	},
@@ -4126,7 +4303,9 @@ widget("chat",{
 		//this.$.input.focus();
 		//fix firefox
 		var item = this.$.input;
-		window.setTimeout(function(){item.focus()},0);
+		window.setTimeout(function(){
+			try{item.focus()}catch(e){};
+		},0);
 	},
 	_noticeTime: null,
 	_noticeTxt:"",
@@ -4157,7 +4336,8 @@ widget("chat",{
 		var main = this.$.main;
 		//Don't auto scroll when user view history.
 		//if ( main.scrollHeight - main.scrollTop - main.clientHeight < 200 )
-		main.scrollTop = main.scrollHeight;
+		if( main.scrollTop != main.scrollHeight)
+			main.scrollTop = main.scrollHeight;
 	},
 	_fitUI: function(e){
 		var self = this, win = self.window, $ = self.$;
@@ -4185,13 +4365,14 @@ widget("chat",{
 			if(h> 32 && h < 100) el.height(h + scrollTop);
 		}
 	},
-	_sendMessage: function(val){
+	sendMessage: function(val){
 		var self = this, options = self.options, info = options.info;
 		var msg = {
 			type: options.type == "room" ? "multicast" : "unicast",
 			to: info.id,
 			from: options.user.id,
 			nick: options.user.nick,
+			to_nick: info.nick,
 			//stype: '',
 			offline: info.presence != "online",
 			timestamp: (new Date()).getTime(),
@@ -4211,7 +4392,7 @@ widget("chat",{
 				var el = target(e), val = el.value;
 				// "0" will false
 				if (trim(val).length) {
-					self._sendMessage( val );
+					self.sendMessage( val );
 					el.value = "";
 					preventDefault(e);
 				}
@@ -4269,7 +4450,7 @@ widget("chat",{
 		$.userPic.firstChild.setAttribute("defaultsrc", info.default_pic_url ? info.default_pic_url : "");
 		setTimeout(function(){
 			if(info.pic_url || info.default_pic_url) {
-				$.userPic.firstChild.setAttribute("src", info.pic_url || info.default_pic_url);
+				try{$.userPic.firstChild.setAttribute("src", info.pic_url || info.default_pic_url);}catch(e){};
 			}
 		},100);
 		$.userStatus.innerHTML = stripHTML(info.status) || "&nbsp";
@@ -4377,7 +4558,7 @@ webimUI.chat.defaults.emot = true;
 plugin.add("chat","emot",{
 	init:function(e, ui){
 		var chat = ui.self;
-		var emot = new webimUI.emot();
+		var emot = chat.emot = new webimUI.emot();
 		emot.bind("select",function( e, alt){
 
 			chat.focus();
@@ -4385,6 +4566,7 @@ plugin.add("chat","emot",{
 		});
 		var trigger = createElement(tpl('<a href="#chat-emot" title="<%=emot%>"><em class="webim-icon webim-icon-emot"></em></a>'));
 		addEvent(trigger,"click",function(e){
+			chat.upload && removeClass( chat.upload.element, "webim-upload-show" );
 			preventDefault(e);
 			emot.toggle();
 		});
@@ -4394,6 +4576,28 @@ plugin.add("chat","emot",{
 	send:function(e, ui){
 	}
 });
+
+webimUI.chat.defaults.image = true;
+plugin.add("chat","image",{
+	init:function(e, ui){
+		var chat = ui.self;
+		var upload  = chat.upload = new webimUI.upload();
+		upload.bind("upload",function( e, markup ){
+			chat.sendMessage( markup );
+		});
+		var trigger = createElement(tpl('<a href="#chat-upload" title="<%=upload%>"><em class="webim-icon webim-icon-upload"></em></a>'));
+		addEvent(trigger,"click",function(e){
+			chat.emot && removeClass( chat.emot.element, "webim-emot-show" );
+			preventDefault(e);
+			upload.toggle();
+		});
+		ui.$.toolContent.appendChild(upload.element);
+		ui.$.tools.appendChild(trigger);
+	},
+	send:function(e, ui){
+	}
+});
+
 
 webimUI.chat.defaults.clearHistory = true;
 plugin.add("chat","clearHistory",{
@@ -4481,6 +4685,8 @@ plugin.add("chat","downloadHistory",{
 function ieCacheSelection(e){
 	document.selection && (this.caretPos = document.selection.createRange());
 }
+
+
 //
 /* ui.setting:
 *
@@ -4616,7 +4822,7 @@ app( "user", function( options ) {
 	options = options || {};
 	var ui = this, im = ui.im;
 	var userUI = new webimUI.user();
-	hide( userUI.element );
+	!options.show && hide( userUI.element );
 	options.container && options.container.appendChild( userUI.element );
 	userUI.bind("online", function( e, params ) {
 		im.online( params );
@@ -4734,8 +4940,7 @@ app("login", function( options ) {
 widget("login", {
 	questions: null,
 	notice: "",
-	template: '<div>  \
-		<div id=":login" class="webim-login"> \
+	template: '<div id=":login" class="webim-login"> \
 			<div class="webim-login-logo" id=":logo"></div>\
 			<div class="webim-login-notice" id=":notice"></div>\
 			<div class="ui-state-error webim-login-error ui-corner-all" style="display: none;" id=":error"></div>\
@@ -4817,12 +5022,12 @@ app("buddy", function( options ){
 	options = options || {};
 	var ui = this, im = ui.im, buddy = im.buddy, layout = ui.layout;
 	var buddyUI = new webimUI.buddy(null, extend({
-		title: i18n("buddy")
+		title: options.title || i18n("buddy")
 	}, options ) );
 
 	layout.addWidget( buddyUI, {
 		className: "webim-buddy-window",
-		title: i18n( "buddy" ),
+		title: options.title || i18n( "buddy" ),
 		titleVisibleLength: 19,
 		sticky: im.setting.get("buddy_sticky"),
 		isMinimize: !im.status.get("b"),
@@ -4852,7 +5057,7 @@ app("buddy", function( options ){
 	});
 
 	//Bug... 如果用户还没登录，点击， status.set 会清理掉正在聊天的session
-	buddyUI.window && buddyUI.window.bind("displayStateChange",function(type){
+	buddyUI.window && buddyUI.window.bind("displayStateChange",function(e, type){
 		if(type != "minimize"){
 			buddy.options.active = true;
 			im.status.set("b", 1);
@@ -5050,6 +5255,7 @@ self.trigger("offline");
 			//self._updateInfo(el, info);
 			var a = el.firstChild;
 			addEvent(a, "click",function(e){
+				self.active( id );
 				preventDefault(e);
 				self.showCount( id, 0 );
 				self.trigger("select", [info]);
@@ -5127,6 +5333,22 @@ self.trigger("offline");
 		var self = this, el = self.li[id];
 		el && el.firstChild.click();
 		return el;
+	},
+	active: function(id){
+		var self = this; 
+		if( !self.options.highlightable )
+			return;
+		if ( self._actived )
+			removeClass( self._actived.firstChild, "ui-state-default ui-state-highlight" );
+		if( !id ){
+			self._actived = null;
+			return;
+		}
+		var el = self.li[id];
+		if( el ) {
+			addClass( el.firstChild,  "ui-state-default ui-state-highlight" );
+			self._actived = el;
+		}
 	},
 	destroy: function(){
 	}
@@ -5687,4 +5909,170 @@ widget("notification",{
 	destroy: function(){
 	}
 });
+app("layout.popup", function( options ) {
+
+	options = options || {};
+	var ui = this
+	  , im = ui.im
+	  , __status = false
+	  , buddy = im.buddy
+	  , history = im.history
+	  , status = im.status
+	  , setting = im.setting
+	  , room = im.room;
+
+	var layout = new webimUI["layout.popup"]( null,extend({
+	}, options, {
+		ui: ui
+	}) );
+
+	im.bind("beforeOnline",function(e, params){
+		extend(params, {
+			buddy_ids: status.get("_cacheBuddy"),
+			room_ids: "",
+			show: "available"
+		});
+	});
+
+	im.bind("online",function(e, data){
+		layout.options.user = data.user;
+	});
+
+	var mapper = function(a){ return a && a.id };
+	var cacheBuddy = function(e){
+		var data = map( buddy.all(true), mapper );
+		status.set("_cacheBuddy", data.join(","));
+		layout.updateAllChat();
+	};
+	buddy.bind("online", cacheBuddy).bind("offline", cacheBuddy);
+
+	history.bind("unicast", function( e, id, data){
+		var c = layout.chat("unicast", id), count = "+" + data.length;
+		if(c){
+			c.history.add(data);
+		}
+	});
+	history.bind("clear", function(e, type, id){
+		var c = layout.chat(type, id);
+		c && c.history.clear();
+	});
+
+	//all ready.
+	//message
+	im.bind("message", function(e, data){
+		var show = false,
+			l = data.length, d, uid = im.data.user.id, id, c, count = "+1";
+		var buddyUI = layout.widget("buddy");
+
+		for(var i = 0; i < l; i++){
+			d = data[i];
+			id = d["id"], type = d["type"];
+			c = layout.chat(type, id);
+			c && c.status("");//clear status
+			if(!c){	
+				buddyUI.showCount(id, count);
+			}
+			if(d.from != uid)show = true;
+		}
+		if(show){
+			sound.play('msg');
+			titleShow(i18n("new message"), 5);
+		}
+	});
+
+	im.bind("status",function(e, data){
+		each(data,function(n,msg){
+			var userId = im.data.user.id;
+			var id = msg['from'];
+			if (userId != msg.to && userId != msg.from) {
+				id = msg.to; //群消息
+				var nick = msg.nick;
+			}else{
+				var c = layout.chat("buddy", id);
+				c && c.status(msg['show']);
+			}
+		});
+	});
+
+
+	return layout;
+
+});
+
+widget("layout.popup",{
+	template: '<div id="webim" class="webim webim-state-ready">\
+	<div class="webim-preload ui-helper-hidden-accessible">\
+	<div id="webim-flashlib-c">\
+	</div>\
+	</div>\
+	<div id=":layout" class="webim-layout webim-popup ui-helper-clearfix"><div id=":left" class="webim-popup-left"></div><div id=":right" class="webim-popup-right"></div></div>\
+	</div>'
+},{
+	_init: function(element, options){
+		var self = this, options = self.options;
+		extend(self,{
+			widgets: {}
+		});
+	},
+	buildUI: function(e){
+	},
+	widget:function(name){
+		return this.widgets[name];
+	},
+	addWidget: function(widget, options){
+		var win = self.win = new webimUI.window(null, extend(options, {
+			closeable: false,
+			minimizable: false,
+			isMinimize: false
+		}));
+		widget.window = win;
+		win.html( widget.element );
+		this.$.left.appendChild( win.element );
+		this.widgets[widget.name] = widget;
+	},
+	focusChat: function(type, id){
+		id = _id_with_type(type, id);
+	},
+	chat:function(type, id){
+		if( !type || ( this.__chat && this.__chat.__id == _id_with_type(type, id) ) )
+			return this.__chat;
+		return null;
+	},
+	updateChat: function(type, data){
+	},
+	updateAllChat:function(){
+		var chat = this.chat();
+		chat && chat.update();
+	},
+	addChat: function(type, id, chatOptions, winOptions, nick){
+		type = _tr_type(type);
+		var self = this;
+		if ( self.__chat )
+			remove( self.__chat.window.element );
+
+		var win = self.win = new webimUI.window(null, extend({
+			//closeable: false,
+			minimizable: false
+		}, winOptions )).bind("close", function(){
+			//Remove chat
+			self.__chat = null;
+			self.widgets["buddy"] && self.widgets["buddy"].active();
+		});
+
+		var widget = self.__chat = self.options.ui.addApp("chat", extend({
+			id: id, 
+			type: type, 
+			nick: nick, 
+			winOptions: winOptions,
+			clearHistory: false,
+			downloadHistory: false
+		}, chatOptions ));
+
+		widget.__id = _id_with_type(type, id);
+		widget.setWindow( win );
+		self.$.right.appendChild( win.element );
+	}
+});
+
+
 })(window, document);

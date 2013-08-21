@@ -93,6 +93,7 @@ webim.ui.i18n.store('zh-TW',{
 	"question": "\u554f\u984c",        
 	"answer": "\u7b54\u6848",
 	"login": "\u767b\u9304",
+	"upload": "\u4e0a\u50b3",
 	"exit": "\u9000\u51fa"
 });
 

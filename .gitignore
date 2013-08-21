@@ -1,2 +1,5 @@
 webim
 dist
+.DS_Store
+*.swp
+

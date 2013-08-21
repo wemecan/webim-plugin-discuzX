@@ -2,17 +2,23 @@
  * Webim UI v3.0.1
  * http://www.webim20.cn/
  *
- * Copyright (c) 2010 Hidden
+ * Copyright (c) 2013 Arron
  * Released under the MIT, BSD, and GPL Licenses.
  *
- * Date: Fri Jul 12 19:56:03 2013 +0800
- * Commit: 096b21e744741d1e3e1d401a5ac195f892724a4b
+ * Date: Wed Aug 21 23:26:35 2013 +0800
+ * Commit: fe5e4a5b6180ba3114afb4693ff3e00e3ea7beb8
  */
 
 body {
         margin: 0;
 	/** Fix the font size in google chrome. http://www.mangguo.org/google-chrome-chinese-minimum-font-size/ */
 	-webkit-text-size-adjust: none;
+}
+
+.webim, .webim *,.webim *:before, .webim *:after {
+	-moz-box-sizing: content-box;
+	-webkit-box-sizing: content-box;
+	box-sizing: content-box; 
 }
 
 /* some sites removes and neutralizes the inconsistent default styling of HTML elements. */
@@ -24,7 +30,7 @@ body {
 .webim img{
         border:0;
 }
-.webim{
+#webim, .webim, .webim h1, .webim h2, .webim h3, .webim h4, .webim h5, .webim h6{
         font-size: 10px;
         line-height: 1.5;
         font-family: "lucida grande", tahoma, helvetica, arial, "bitstream vera sans", sans-serif;
@@ -130,10 +136,9 @@ a .webim-icon, a .ui-icon{
 }
 .webim-icon-home{
 	background-position:0 0;
-
- }
- .webim-icon-buddy{
-	 background-position:-16px 0;
+}
+.webim-icon-buddy{
+	background-position:-16px 0;
  }
  .webim-icon-notification{
 	 background-position:-32px 0;
@@ -178,8 +183,12 @@ a .webim-icon, a .ui-icon{
 	 background-position:-48px -32px;
  }
 
+ .webim-icon-upload{
+	 background-position:-16px -48px;
+}
+
 .webim-icon-available{
-	 background-position:0 -80px;
+	background-position:0 -80px;
 }
 
 .webim-icon-dnd{
@@ -196,7 +205,7 @@ a .webim-icon, a .ui-icon{
 }
 /*use bullet*/
 .webim-icon-available{
-	 background-position:0 -64px;
+	background-position:0 -64px;
 }
 
 .webim-icon-dnd{
@@ -231,6 +240,35 @@ a .webim-icon, a .ui-icon{
         border-left-width: 0;
         border-right-width: 0;
         width: 100%;
+}
+.webim-upload{
+	display: none;
+}
+
+.webim-upload-show{
+	display: block;
+}
+
+.webim-chat .webim-upload{
+	position: absolute;
+	bottom: 0;
+	padding: 10px 0;
+	border-left-width: 0;
+	border-right-width: 0;
+	width: 100%;
+}
+
+.webim-upload input{
+	float: left;
+	width: 130px;
+	margin: 3px 10px;
+}
+
+.webim-upload .webim-upload-submit{
+	width: auto;
+	margin: 0 10px;
+	float: right;
+	padding: 3px 10px;
 }
 .webim .webim-history-actions{
         margin:0;
@@ -668,6 +706,7 @@ a .webim-icon, a .ui-icon{
 	padding: 0 .3em;
 	border-left-width: 0;
 	border-right-width: 0;
+	overflow: hidden;
 }
 .webim .webim-chat-tools a, .webim .webim-chat-tools a em{
 	float: left;
@@ -769,7 +808,10 @@ a .webim-icon, a .ui-icon{
 }
 
 #webim-buddy .webim-buddy-content{
-        padding: .2em .5em .3em;
+        padding: .2em 0 1.2em;
+	/*
+	padding: 0;
+	*/
         overflow-y: auto;
         position:relative;
 }
@@ -796,7 +838,7 @@ a .webim-icon, a .ui-icon{
 	*/
 }
 #webim-buddy .webim-buddy-empty{
-        padding: 0 0 1em;
+        padding: .5em .5em 1em;
 }
 
 #webim-buddy .webim-buddy-offline a{
@@ -811,12 +853,14 @@ a .webim-icon, a .ui-icon{
         border-bottom-width: 1px;
         padding: .2em .5em 0;
 }
+
 #webim-buddy ul li{
 }
+
 #webim-buddy ul li a{
         display:block;
         margin-left:3em;
-        padding: .3em 0;
+        padding: .3em .5em;
 }
 
 #webim-buddy ul li .webim-icon{
@@ -1168,6 +1212,118 @@ a .webim-icon, a .ui-icon{
         overflow: hidden;
         padding:.1em 0;
 }
+
+* html  .webim-popup, .webim-popup{
+	position: static; 
+	bottom: auto;
+	right: auto;
+	left: auto;
+	top:auto;
+	-webkit-box-shadow:none;
+	-moz-box-shadow:none;
+	box-shadow:none;
+	margin-left: 220px;
+}
+
+.webim-popup .webim-window-header h4{
+	margin: 3px 0;
+}
+
+.webim-popup .webim-window-window{
+	position: relative;
+	bottom: auto;
+	z-index: 5;
+	right: auto;
+	width: 100%;
+}
+
+.webim-popup-left{
+	width: 200px;
+	margin-left: -220px;
+	float: left;
+}
+
+.webim-popup-right{
+}
+
+.webim-popup .webim-window{
+	float: none;
+}
+
+.webim-popup .webim-window-tab-wrap {
+	float: none;
+	display: none;
+}
+
+.webim-popup .webim-chat{
+}
+
+.webim-popup .webim-chat-input{
+	height: 6em;
+}
+.webim-popup .webim-chat-input-wrap{
+	height: 6.5em;
+}
+
+.webim-popup .webim-chat-main
+, .webim-popup .webim-chat-content{
+	height: 24.5em;
+}
+
+.webim-popup .webim-buddy .webim-window-tab-count{
+	top: auto;
+	margin-left: 0;
+	right: 3px;
+}
+
+.webim-popup #webim-buddy{
+	height: 343px;
+}
+
+.webim-popup #webim-buddy .webim-buddy-content{
+        padding: .2em 0 1.5em;
+}
+
+.webim-popup #webim-buddy ul li a img{
+	display:none;
+}
+
+.webim-popup #webim-buddy ul li a{
+	margin-left: 0;
+	margin-right: 0;
+	border-left: 0px;
+	border-right: 0px;
+	position: relative;
+}
+.webim-popup #webim-buddy ul li a.ui-state-highlight{
+	padding:.2em .5em;
+}
+
+.webim-popup #webim-buddy ul li a span{
+}
+
+.webim-popup .webim-chat .webim-chat-notice-wrap1{
+	position: relative;
+}
+
+.webim-popup .webim-chat .webim-chat-notice-wrap{
+	position: absolute;
+	width: 100%;
+}
+
+/*user icon*/
+/*
+.webim-popup .webim-user-show-dnd,.webim-popup  .webim-user-show-away,.webim-popup  .webim-user-show-invisible{
+	display: none !important;
+}
+ */
+
+.webim-popup .webim-window-window {
+	/*-moz-box-shadow:0 20px 40px rgba(0, 0, 0, 0.4);*/
+	-moz-box-shadow:0 10px 20px rgba(0, 0, 0, 0.4);
+	-webkit-box-shadow:0 10px 20px rgba(0, 0, 0, 0.4);
+}
+
 /*discuz X1*/
 #pcd .webim-chatlink{
 	padding-left: 0;

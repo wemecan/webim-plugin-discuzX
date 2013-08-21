@@ -28,30 +28,36 @@
 		lib: path + "static/assets/sound.swf",
 		msg: path + "static/assets/sound/msg.mp3"
 	};
-	var ui = new webim.ui(document.body, {
+	var ui = new webim.ui(document.getElementById("webim_content"), {
 		imOptions: {
 			jsonp: _IMC.jsonp
 		},
-		soundUrls: soundUrls
+		soundUrls: soundUrls,
+		layout: "layout.popup",
+		layoutOptions: {
+			unscalable: true
+		},
+		buddyChatOptions: {
+			simple: true
+		}
 	}), im = ui.im;
 
 	if( _IMC.user ) im.setUser( _IMC.user );
-	if( _IMC.menu ) ui.addApp("menu", { "data": _IMC.menu } );
-	if( _IMC.enable_shortcut ) ui.layout.addShortcut( _IMC.menu );
 
+	//ui.addApp("buddy", {
+	//	is_login: _IMC['is_login'],
+	//	loginOptions: _IMC['login_options']
+	//} );
+	
 	ui.addApp("buddy", {
-		is_login: _IMC['is_login'],
-		loginOptions: _IMC['login_options']
+		is_login: true,
+		title: "好友列表",
+		highlightable: true,
+		disable_user: false,
+		userOptions: {show: true},
+		disable_group: false
 	} );
-	ui.addApp("room");
-	ui.addApp("notification");
-	ui.addApp("setting", {"data": webim.setting.defaults.data});
-	if( !_IMC.disable_chatlink )ui.addApp("chatlink", {
-		space_href: [/mod=space&uid=(\d+)/i, /space\-uid\-(\d+)\.html$/i],
-		space_class: /xl\sxl2\scl/,
-		space_id: null,
-		link_wrap: document.getElementById("ct")
-	});
+
 	ui.render();
 	_IMC['is_login'] && im.autoOnline() && im.online();
 })(webim);
