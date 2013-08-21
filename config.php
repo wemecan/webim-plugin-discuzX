@@ -7,7 +7,7 @@
  */
 
 $_IMC = array();
-$_IMC["version"] = "3.0";//版本
+$_IMC["version"] = "3.0.1";//版本
 $_IMC["enable"] = true;//开启webim
 $_IMC["domain"] = "";//网站注册域名
 $_IMC["apikey"] = "";//网站注册apikey
