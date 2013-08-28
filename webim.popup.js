@@ -38,7 +38,8 @@
 			unscalable: true
 		},
 		buddyChatOptions: {
-			simple: true
+			simple: true,
+			upload: false
 		}
 	}), im = ui.im;
 

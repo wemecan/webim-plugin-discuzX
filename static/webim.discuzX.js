@@ -2084,8 +2084,8 @@ model("history", {
  * Copyright (c) 2013 Arron
  * Released under the MIT, BSD, and GPL Licenses.
  *
- * Date: Wed Aug 21 23:26:35 2013 +0800
- * Commit: fe5e4a5b6180ba3114afb4693ff3e00e3ea7beb8
+ * Date: Wed Aug 21 23:51:42 2013 +0800
+ * Commit: 37229643d7b374903fbd9a9956574f0dfc787423
  */
 (function(window,document,undefined){
 
@@ -4140,16 +4140,16 @@ app( "chat", function( options ) {
 		info.presence = "online";
 
 		options = extend( {
-			info: info,
-			user: im.data.user
-		}, ui.options.roomChatOptions, { 
-			history: h, 
-			block: true, 
 			emot: true, 
 			clearHistory: false, 
 			member: true, 
-			type: type, 
+			block: true, 
 			downloadHistory: false 
+		}, ui.options.roomChatOptions, { 
+			info: info,
+			user: im.data.user,
+			history: h, 
+			type: type 
 		}, options );
 
 		var chatUI = new webimUI.chat( null, options );
@@ -4191,13 +4191,13 @@ app( "chat", function( options ) {
 		};
 
 		options = extend( {
-			info: info,
-			user: im.data.user
+			emot: true, 
+			clearHistory: true 
 		}, ui.options.buddyChatOptions, { 
+			info: info,
+			user: im.data.user,
 			history: h, 
 			block: false, 
-			emot: true, 
-			clearHistory: true, 
 			member: false, 
 			msgType: "unicast"
 		}, options );
@@ -4577,8 +4577,8 @@ plugin.add("chat","emot",{
 	}
 });
 
-webimUI.chat.defaults.image = true;
-plugin.add("chat","image",{
+webimUI.chat.defaults.upload = false;
+plugin.add("chat","upload",{
 	init:function(e, ui){
 		var chat = ui.self;
 		var upload  = chat.upload = new webimUI.upload();
@@ -6059,14 +6059,15 @@ widget("layout.popup",{
 			self.widgets["buddy"] && self.widgets["buddy"].active();
 		});
 
-		var widget = self.__chat = self.options.ui.addApp("chat", extend({
-			id: id, 
-			type: type, 
-			nick: nick, 
-			winOptions: winOptions,
-			clearHistory: false,
-			downloadHistory: false
-		}, chatOptions ));
+		var widget = self.__chat = self.options.ui.addApp("chat", extend(
+			{
+				clearHistory: true
+			}, self.options.ui.options.buddyChatOptions, {
+				id: id, 
+				type: type, 
+				nick: nick, 
+				winOptions: winOptions
+			}, chatOptions ));
 
 		widget.__id = _id_with_type(type, id);
 		widget.setWindow( win );
