@@ -225,6 +225,7 @@ function webim_get_rooms($ids=null){
 	if(!$ids){
 		return $list;
 	}
+	$ids = "'".implode("','", explode(",", $ids))."'";
 	$where = "f.fid IN ($ids)";
 	$query = DB::query("SELECT f.fid, f.name, ff.icon, ff.membernum, ff.description 
 		FROM ".DB::table('forum_forum')." f 
