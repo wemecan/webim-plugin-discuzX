@@ -2133,8 +2133,8 @@ model("history", {
  * Copyright (c) 2013 Arron
  * Released under the MIT, BSD, and GPL Licenses.
  *
- * Date: Sun Sep 1 11:45:11 2013 +0800
- * Commit: 0dca5214f7cd73fabc440abbc7197757d83a02fc
+ * Date: Sun Sep 1 12:19:14 2013 +0800
+ * Commit: 13c1a5917bcf71679c245954a1206f2c5f8775ff
  */
 (function(window,document,undefined){
 
@@ -5319,7 +5319,6 @@ self.trigger("offline");
 			//self._updateInfo(el, info);
 			var a = el.firstChild;
 			addEvent(a, "click",function(e){
-				self.active( id );
 				preventDefault(e);
 				self.showCount( id, 0 );
 				self.trigger("select", [info]);
@@ -5650,7 +5649,6 @@ widget("room",{
 				hide( a );
 			}
 			addEvent(a.nextSibling, "click",function(e){
-				self.active( id );
 				preventDefault(e);
 				self.showCount( id, 0 );
 				self.trigger("select", [info]);
@@ -6391,6 +6389,7 @@ widget("layout.popup",{
 		widget && widget.active(null);
 
 		widget = self.widget( type );
+		widget && widget.active(id);
 
 		var win = new webimUI.window(null, extend({
 			//closeable: false,
