@@ -44,19 +44,18 @@
 
 	if( _IMC.user ) im.setUser( _IMC.user );
 
-	//ui.addApp("buddy", {
-	//	is_login: _IMC['is_login'],
-	//	loginOptions: _IMC['login_options']
-	//} );
-	
 	ui.addApp("buddy", {
-		is_login: true,
+		is_login: _IMC['is_login'],
+		//	loginOptions: _IMC['login_options']
 		title: "好友列表",
-		highlightable: true,
-		disable_user: false,
 		userOptions: {show: true},
 		disable_group: false
 	} );
+
+	ui.addApp("room");
+	ui.addApp("setting", {"data": {
+		play_sound: webim.setting.defaults.data.play_sound
+	}});
 
 	ui.render();
 	_IMC['is_login'] && im.autoOnline() && im.online();
