@@ -5,8 +5,8 @@
  * Copyright (c) 2013 Arron
  * Released under the MIT, BSD, and GPL Licenses.
  *
- * Date: Fri Aug 30 10:06:05 2013 +0800
- * Commit: 21e9f9b97c85a911952556d12fd34cd11997ca9f
+ * Date: Sun Sep 1 11:45:11 2013 +0800
+ * Commit: 0dca5214f7cd73fabc440abbc7197757d83a02fc
  */
 
 body {
@@ -737,7 +737,7 @@ a .webim-icon, a .ui-icon{
 }
 
 .webim .webim-member{
-	margin-top:  -.1em;
+	margin-top:  -1px;
 	height: 16em;
 	width: 7em;
 	left: -7.2em;
@@ -868,9 +868,15 @@ a .webim-icon, a .ui-icon{
 
 #webim-buddy ul li a{
         display:block;
-        margin-left:3em;
-        padding: .3em .5em;
+	padding: 5px .5em 5px 3.5em;
 	position: relative;
+}
+
+#webim-buddy ul li a.ui-state-highlight{
+	padding-top: 4px;
+	padding-bottom: 4px;
+	border-right-width: 0;
+	border-left-width: 0;
 }
 
 #webim-buddy .webim-window-tab-count{
@@ -915,7 +921,7 @@ a .webim-icon, a .ui-icon{
 }
 
 #webim-buddy.webim-buddy-simple ul li a{
-	margin-left: .3em;
+	padding-left: .3em;
 }
 #webim-buddy.webim-buddy-simple ul li a strong{
 	display: inline;
@@ -1110,7 +1116,7 @@ a .webim-icon, a .ui-icon{
         padding: 1em 2em;
 }
 #webim-room .webim-room-content{
-        padding: .2em .5em 0;
+        padding: .2em 0 1.2em;
         position:relative;
 }
 /*fuck ie6  why ?*/
@@ -1158,9 +1164,15 @@ a .webim-icon, a .ui-icon{
 
 #webim-room ul li a{
         display:block;
-        margin-left:3em;
-        padding: .3em 0;
+	padding: 5px .5em 5px 3.5em;
 	position: relative;
+}
+
+#webim-room ul li a.ui-state-highlight{
+	padding-top: 4px;
+	padding-bottom: 4px;
+	border-right-width: 0;
+	border-left-width: 0;
 }
 
 #webim-room .webim-window-tab-count{
@@ -1296,6 +1308,23 @@ a .webim-icon, a .ui-icon{
 	margin-left: 220px;
 }
 
+.webim-popup .webim-widgets{
+	float: none;
+	background: none;
+	margin-top: -1px;
+}
+
+.webim-popup .webim-widgets
+, .webim-popup .webim-layout-bg{
+	height: 26px;
+}
+
+.webim-popup .webim-window-normal .webim-window-tab{
+	border-width: 0;
+	border-right-width: 1px;
+	padding-bottom: 1px;
+}
+
 .webim-popup .webim-window-header h4{
 	margin: 3px 0;
 }
@@ -1314,6 +1343,23 @@ a .webim-icon, a .ui-icon{
 	float: left;
 }
 
+.webim-popup .webim-popup-left .webim-window-content{
+	height: 350px;
+}
+
+.webim-popup .webim-chat-input{
+	height: 6em;
+}
+.webim-popup .webim-chat-input-wrap{
+	height: 80px;
+}
+
+.webim-popup .webim-chat-main
+, .webim-popup .webim-chat-content
+, .webim-popup .webim-member{
+	height: 319px;
+}
+
 .webim-popup-right{
 }
 
@@ -1322,25 +1368,16 @@ a .webim-icon, a .ui-icon{
 }
 
 .webim-popup .webim-window-tab-wrap {
-	float: none;
 	display: none;
+}
+
+.webim-popup .webim-widgets .webim-window-tab-wrap {
+	display: block;
 }
 
 .webim-popup .webim-chat{
 }
 
-.webim-popup .webim-chat-input{
-	height: 6em;
-}
-.webim-popup .webim-chat-input-wrap{
-	height: 6.5em;
-}
-
-.webim-popup .webim-chat-main
-, .webim-popup .webim-chat-content
-, .webim-popup .webim-member{
-	height: 24.5em;
-}
 
 .webim-popup .webim-chat-sidebar {
 	right: 0;
@@ -1350,10 +1387,6 @@ a .webim-icon, a .ui-icon{
 	left: 0em;
 	-moz-border-radius-topleft: 0; -webkit-border-top-left-radius: 0; border-top-left-radius: 0; -moz-border-radius-bottomleft: 0; -webkit-border-bottom-left-radius: 0; border-bottom-left-radius: 0;
 	-moz-border-radius-topright: 4px; -webkit-border-top-right-radius: 4px; border-top-right-radius: 4px; -moz-border-radius-bottomright: 4px; -webkit-border-bottom-right-radius: 4px; border-bottom-right-radius: 4px;
-}
-
-.webim-popup #webim-buddy{
-	height: 343px;
 }
 
 .webim-popup #webim-buddy.webim-buddy-scroll .webim-buddy-content{
@@ -1369,25 +1402,9 @@ a .webim-icon, a .ui-icon{
         padding: .2em 0 1.5em;
 }
 
-.webim-popup #webim-buddy ul li a img{
-	display:none;
-}
-
-.webim-popup #webim-buddy ul li a{
-	margin-left: 0;
-	margin-right: 0;
-	border-left: 0px;
-	border-right: 0px;
-}
-.webim-popup #webim-buddy ul li a.ui-state-highlight{
-	padding:.2em .5em;
-}
-
-.webim-popup #webim-buddy ul li a span{
-}
-
 .webim-popup .webim-chat .webim-chat-notice-wrap1{
 	position: relative;
+	z-index: 3;
 }
 
 .webim-popup .webim-chat .webim-chat-notice-wrap{
