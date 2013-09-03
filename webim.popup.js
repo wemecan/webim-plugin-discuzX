@@ -39,6 +39,10 @@
 		buddyChatOptions: {
 			simple: true,
 			upload: false
+		},
+		roomChatOptions: {
+			simple: true,
+			upload: false
 		}
 	}), im = ui.im;
 
@@ -49,6 +53,7 @@
 		//	loginOptions: _IMC['login_options']
 		title: "好友列表",
 		userOptions: {show: true},
+		showUnavailable: false,
 		disable_group: false
 	} );
 
