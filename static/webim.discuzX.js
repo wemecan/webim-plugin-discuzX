@@ -1328,12 +1328,12 @@ extend(webim.prototype, {
 		history.options.userInfo = data.user;
 		var ids = [];
 		each( data.buddies, function(n, v) {
-			history.init( "unicast", v.id, v.history );
+			history.init( "chat", v.id, v.history );
 		});
 		buddy.set( data.buddies );
 		//rooms
 		each( data.rooms, function(n, v) {
-			history.init( "multicast", v.id, v.history );
+			history.init( "grpchat", v.id, v.history );
 		});
 		//blocked rooms
 		var b = self.setting.get("blocked_rooms"), roomData = data.rooms;
@@ -1382,9 +1382,9 @@ extend(webim.prototype, {
 			for(var i = 0; i < l; i++){
 				v = data[i];
 				type = v["type"];
-				id = type == "unicast" ? (v.to == uid ? v.from : v.to) : v.to;
+				id = type == "chat" ? (v.to == uid ? v.from : v.to) : v.to;
 				v["id"] = id;
-				if( type == "unicast" && !v["new"] ) {
+				if( type == "chat" && !v["new"] ) {
 					var msg = { id: id, presence: "online" };
 					//update nick.
 					if( v.nick && v.to == uid ) msg.nick = v.nick;
@@ -2029,7 +2029,7 @@ model( "buddy", {
 	} );
 } )();
 /*
-history // 消息历史记录 Support unicast and multicast
+history // 消息历史记录 Support chat and grpchat
 */
 
 model("history", {
@@ -2037,14 +2037,14 @@ model("history", {
 	_init:function(){
 		var self = this;
 		self.data = self.data || {};
-		self.data.unicast = self.data.unicast || {};
-		self.data.multicast = self.data.multicast || {};
+		self.data.chat = self.data.chat || {};
+		self.data.grpchat = self.data.grpchat || {};
 	},
 	get: function( type, id ) {
 		return this.data[type][id];
 	},
 	set:function( addData ) {
-		var self = this, data = self.data, cache = {"unicast": {}, "multicast": {}};
+		var self = this, data = self.data, cache = {"chat": {}, "grpchat": {}};
 		addData = makeArray(addData);
 		var l = addData.length , v, id, userId = self.options.userInfo.id;
 		if(!l)return;
@@ -2052,7 +2052,7 @@ model("history", {
 			//for(var i in addData){
 			v = addData[i];
 			type = v.type;
-			id = type == "unicast" ? (v.to == userId ? v.from : v.to) : v.to;
+			id = type == "chat" ? (v.to == userId ? v.from : v.to) : v.to;
 			if(id && type){
 				cache[type][id] = cache[type][id] || [];
 				cache[type][id].push(v);
@@ -2133,8 +2133,8 @@ model("history", {
  * Copyright (c) 2013 Arron
  * Released under the MIT, BSD, and GPL Licenses.
  *
- * Date: Wed Sep 11 13:27:28 2013 +0800
- * Commit: 833f994cb2dbe974246e776309193d0116a2cc45
+ * Date: Wed Sep 11 17:57:04 2013 +0800
+ * Commit: 179b345c9b291513f8dfea93671f29d1ba3640ad
  */
 (function(window,document,undefined){
 
@@ -3303,7 +3303,7 @@ app("layout", function( options ) {
 			c = layout.chat(type, id);
 			c && c.status("");//clear status
 			if(!c){	
-				if (d.type === "unicast"){
+				if (d.type === "chat"){
 					layout.addChat(type, id, null, null, d.nick);
 				}else{
 					layout.addChat(type, id);  
@@ -3339,15 +3339,15 @@ app("layout", function( options ) {
 
 	(function(){
 		//history events
-		history.bind("unicast", function( e, id, data){
-			var c = layout.chat("unicast", id), count = "+" + data.length;
+		history.bind("chat", function( e, id, data){
+			var c = layout.chat("chat", id), count = "+" + data.length;
 			if(c){
 				c.history.add(data);
 			}
 			//(c ? c.history.add(data) : im.addChat(id));
 		});
-		history.bind("multicast", function(e, id, data){
-			var c = layout.chat("multicast", id), count = "+" + data.length;
+		history.bind("grpchat", function(e, id, data){
+			var c = layout.chat("grpchat", id), count = "+" + data.length;
 			if(c){
 				c.history.add(data);
 			}
@@ -3881,11 +3881,11 @@ function windowWidth(){
 	return document.compatMode === "CSS1Compat" && document.documentElement.clientWidth || document.body.clientWidth;
 }
 function _id_with_type(type, id){
-	return id ? (type == "b" || type == "buddy" || type == "unicast" ? ("b_" + id) : ("r_" + id)) : type;
+	return id ? (type == "b" || type == "buddy" || type == "chat" ? ("b_" + id) : ("r_" + id)) : type;
 }
 
 function _tr_type(type){
-	return type == "b" || type == "buddy" || type == "unicast" ? "buddy" : "room";
+	return type == "b" || type == "buddy" || type == "chat" ? "buddy" : "room";
 }
 
 
@@ -4186,9 +4186,9 @@ app( "chat", function( options ) {
 		type = options.type;
 	if( type == "room" ) {
 
-		var h = history.get( "multicast", id );
+		var h = history.get( "grpchat", id );
 		if( !h )
-			history.load( "multicast", id );
+			history.load( "grpchat", id );
 
 		var info = im.room.get(id) || {
 			id: id,
@@ -4215,7 +4215,7 @@ app( "chat", function( options ) {
 			im.sendMessage( msg );
 			history.set( msg );
 		}).bind("downloadHistory", function( e, info ){
-			history.download( "multicast", info.id );
+			history.download( "grpchat", info.id );
 		}).bind("select", function( e, info ) {
 			info.presence = "online";
 			buddy.presence( info );//online
@@ -4238,9 +4238,9 @@ app( "chat", function( options ) {
 		} );
 
 	} else {
-		var h = history.get( "unicast", id );
+		var h = history.get( "chat", id );
 		if( !h )
-			history.load( "unicast", id );
+			history.load( "chat", id );
 
 		var info = im.buddy.get(id) || {
 			id: id,
@@ -4256,7 +4256,7 @@ app( "chat", function( options ) {
 			history: h, 
 			block: false, 
 			member: false, 
-			msgType: "unicast"
+			msgType: "chat"
 		}, options );
 
 		var chatUI = new webimUI.chat( null, options );
@@ -4270,9 +4270,9 @@ app( "chat", function( options ) {
 		}).bind("sendStatus", function( e, msg ) {
 			im.sendStatus( msg );
 		}).bind("clearHistory", function( e, info ){
-			history.clear( "unicast", info.id );
+			history.clear( "chat", info.id );
 		}).bind("downloadHistory", function( e, info ) {
-			history.download( "unicast", info.id );
+			history.download( "chat", info.id );
 		});
 	}
 	return chatUI;
@@ -4425,7 +4425,7 @@ widget("chat",{
 	sendMessage: function(val){
 		var self = this, options = self.options, info = options.info;
 		var msg = {
-			type: options.type == "room" ? "multicast" : "unicast",
+			type: options.type == "room" ? "grpchat" : "chat",
 			to: info.id,
 			from: options.user.id,
 			nick: options.user.nick,
@@ -5460,7 +5460,7 @@ app("room", function( options ) {
 		for (var i = 0; i < buddies.length; i++) {
 			var id = buddies[i];
 			var msg = {
-				type: "unicast"
+				type: "chat"
 			  , to: id
 			  , from: im.data.user.id
 			  , nick: im.data.user.nick
@@ -6191,14 +6191,14 @@ app("layout.popup", function( options ) {
 
 	(function(){
 		//history events
-		history.bind("unicast", function( e, id, data){
-			var c = layout.chat("unicast", id), count = "+" + data.length;
+		history.bind("chat", function( e, id, data){
+			var c = layout.chat("chat", id), count = "+" + data.length;
 			if(c){
 				c.history.add(data);
 			}
 		});
-		history.bind("multicast", function(e, id, data){
-			var c = layout.chat("multicast", id), count = "+" + data.length;
+		history.bind("grpchat", function(e, id, data){
+			var c = layout.chat("grpchat", id), count = "+" + data.length;
 			if(c){
 				c.history.add(data);
 			}
@@ -6216,7 +6216,7 @@ app("layout.popup", function( options ) {
 			l = data.length, d, uid = im.data.user.id, id, c, count = "+1";
 		for(var i = 0; i < l; i++){
 			d = data[i];
-			id = d["id"], type = d["type"] === "unicast" ? "buddy" : "room";
+			id = d["id"], type = d["type"] === "chat" ? "buddy" : "room";
 			c = layout.chat(type, id);
 			c && c.status("");//clear status
 			if(!c){	
