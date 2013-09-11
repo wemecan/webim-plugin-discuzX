@@ -2133,8 +2133,8 @@ model("history", {
  * Copyright (c) 2013 Arron
  * Released under the MIT, BSD, and GPL Licenses.
  *
- * Date: Sun Sep 1 12:19:14 2013 +0800
- * Commit: 13c1a5917bcf71679c245954a1206f2c5f8775ff
+ * Date: Wed Sep 11 13:27:28 2013 +0800
+ * Commit: 833f994cb2dbe974246e776309193d0116a2cc45
  */
 (function(window,document,undefined){
 
@@ -4432,7 +4432,7 @@ widget("chat",{
 			to_nick: info.nick,
 			//stype: '',
 			offline: info.presence != "online",
-			timestamp: (new Date()).getTime(),
+			timestamp: (new Date()).getTime() - date.timeSkew,
 			body: val
 		};
 		plugin.call(self, "send", [null, self.ui({msg: msg})]);
@@ -4719,7 +4719,7 @@ plugin.add( "chat", "member", {
 	init:function(e, ui){
 		var chat = ui.self, $ = ui.$;
 		chat.memberLi = {};
-		var member = createElement(tpl('<div class="webim-box webim-flex  webim-member ui-widget-content ui-corner-left"><iframe id=":bgiframe" class="webim-bgiframe" frameborder="0" tabindex="-1" src="about:blank;" ></iframe><h4><%=room member%>(<span id=":memberCount">0</span>)</h4><ul id=":ul" class="webim-flex"></ul></div>')), els = mapElements(member);
+		var member = createElement(tpl('<div class="webim-box webim-flex  webim-member ui-widget-content ui-corner-left"><iframe id=":bgiframe" class="webim-bgiframe" frameborder="0" tabindex="-1" src="about:blank;" ></iframe><h4><%=room member%>:<span id=":memberCount">0</span></h4><ul id=":ul" class="webim-flex"></ul></div>')), els = mapElements(member);
 		$.member = els.ul;
 		$.memberCount = els.memberCount;
 		$.sidebar.appendChild( member );
