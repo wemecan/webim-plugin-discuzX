@@ -5,8 +5,8 @@
  * Copyright (c) 2013 Arron
  * Released under the MIT, BSD, and GPL Licenses.
  *
- * Date: Sun Sep 1 12:19:14 2013 +0800
- * Commit: 13c1a5917bcf71679c245954a1206f2c5f8775ff
+ * Date: Wed Sep 11 17:57:04 2013 +0800
+ * Commit: 179b345c9b291513f8dfea93671f29d1ba3640ad
  */
 
 body {
@@ -30,6 +30,12 @@ body {
 .webim img{
         border:0;
 }
+
+.webim label{
+	font-size: 1em;
+	display: inline;
+}
+
 #webim, .webim, .webim h1, .webim h2, .webim h3, .webim h4, .webim h5, .webim h6{
         font-size: 10px;
         line-height: 1.5;
@@ -1400,6 +1406,10 @@ a .webim-icon, a .ui-icon{
 
 .webim-popup #webim-buddy .webim-buddy-content{
         padding: .2em 0 1.5em;
+}
+
+.webim-popup #webim-buddy.webim-buddy-simple ul li a span{
+	display: block;
 }
 
 .webim-popup .webim-chat .webim-chat-notice-wrap1{
