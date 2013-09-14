@@ -38,11 +38,11 @@
 		},
 		buddyChatOptions: {
 			simple: true,
-			upload: false
+			upload: _IMC.upload
 		},
 		roomChatOptions: {
 			simple: true,
-			upload: false
+			upload: _IMC.upload
 		}
 	}), im = ui.im;
 

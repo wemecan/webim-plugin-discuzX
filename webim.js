@@ -31,7 +31,13 @@
 		imOptions: {
 			jsonp: _IMC.jsonp
 		},
-		soundUrls: soundUrls
+		soundUrls: soundUrls,
+		buddyChatOptions: {
+			upload: _IMC.upload
+		},
+		roomChatOptions: {
+			upload: _IMC.upload
+		}
 	}), im = ui.im;
 
 	if( _IMC.user ) im.setUser( _IMC.user );

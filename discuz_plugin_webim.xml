@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <root>
 	<item id="Title"><![CDATA[Discuz! Plugin]]></item>
-	<item id="Version"><![CDATA[X1]]></item>
+	<item id="Version"><![CDATA[X3,X2.5,X2,X1.5,X1.5.1,X1]]></item>
 	<item id="Time"><![CDATA[2010-08-23 21:59]]></item>
 	<item id="Data">
 		<item id="plugin">
@@ -42,7 +42,7 @@
 
 			</item>
 		</item>
-		<item id="version"><![CDATA[X1]]></item>
+		<item id="version"><![CDATA[X3,X2.5,X2,X1.5,X1.5.1,X1]]></item>
 		<item id="var">
 			<item id="0">
 				<item id="displayorder"><![CDATA[1]]></item>
@@ -77,7 +77,7 @@
 				<item id="description"><![CDATA[]]></item>
 				<item id="variable"><![CDATA[port]]></item>
 				<item id="type"><![CDATA[text]]></item>
-				<item id="value"><![CDATA[8000]]></item>
+				<item id="value"><![CDATA[8888]]></item>
 				<item id="extra"><![CDATA[]]></item>
 			</item>
 			<item id="4">
@@ -143,6 +143,15 @@
 				<item id="variable"><![CDATA[enable_login]]></item>
 				<item id="type"><![CDATA[radio]]></item>
 				<item id="value"><![CDATA[0]]></item>
+				<item id="extra"><![CDATA[]]></item>
+			</item>
+			<item id="11">
+				<item id="displayorder"><![CDATA[12]]></item>
+				<item id="title"><![CDATA[文件图片上传]]></item>
+				<item id="description"><![CDATA[支持聊天时上传文件和图片，安装时请修改webim插件目录中的"static/images/files/"为可写]]></item>
+				<item id="variable"><![CDATA[upload]]></item>
+				<item id="type"><![CDATA[radio]]></item>
+				<item id="value"><![CDATA[1]]></item>
 				<item id="extra"><![CDATA[]]></item>
 			</item>
 		</item>
