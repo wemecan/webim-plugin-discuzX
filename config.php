@@ -25,8 +25,8 @@ $_IMC['disable_menu'] = false; //隐藏工具条
 $_IMC['enable_login'] = false; //允许未登录时显示IM，并可从im登录
 $_IMC["host_from_domain"] = false; //设定im服务器为访问域名,当独立部署时,公网内网同时访问时用
 $_IMC['upload'] = false; //是否支持文件(图片)上传
-$_IMC['show_unavailable'] = true; //支持显示不在线用户
-$_IMC['visitor'] = true; //支持访客聊天(默认好友为站长),开启后通过im登录无效
+$_IMC['show_unavailable'] = false; //支持显示不在线用户
+$_IMC['visitor'] = false; //支持访客聊天(默认好友为站长),开启后通过im登录无效
 
 $query = DB::query("SELECT v.* FROM ".DB::table('common_pluginvar')." v, 
 	".DB::table('common_plugin')." p 
