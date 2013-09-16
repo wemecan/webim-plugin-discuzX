@@ -44,6 +44,7 @@ disable_menu: '<?php echo $_IMC['disable_menu'] ? "1" : "" ?>',
 theme: '<?php echo $_IMC['theme']; ?>',
 local: '<?php echo $_IMC['local']; ?>',
 upload: '<?php echo $_IMC['upload']; ?>',
+showUnavailable: '<?php echo $_IMC['show_unavailable']; ?>',
 jsonp: '<?php echo $webim_jsonp ? "1" : "" ?>',
 min: window.location.href.indexOf("webim_debug") != -1 ? "" : ".min"
 };

@@ -53,7 +53,7 @@
 		//	loginOptions: _IMC['login_options']
 		title: "好友列表",
 		userOptions: {show: true},
-		showUnavailable: false,
+		showUnavailable: _IMC.showUnavailable,
 		disable_group: false
 	} );
 

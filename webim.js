@@ -45,6 +45,7 @@
 	if( _IMC.enable_shortcut ) ui.layout.addShortcut( _IMC.menu );
 
 	ui.addApp("buddy", {
+		showUnavailable: _IMC.showUnavailable,
 		is_login: _IMC['is_login'],
 		loginOptions: _IMC['login_options']
 	} );
