@@ -13,7 +13,7 @@
 			<item id="datatables"><![CDATA[]]></item>
 			<item id="directory"><![CDATA[webim/]]></item>
 			<item id="copyright"><![CDATA[webim20.cn]]></item>
-			<item id="version"><![CDATA[@VERSION]]></item>
+			<item id="version"><![CDATA[@VERSION1]]></item>
 			<item id="__modules">
 				<item id="0">
 					<item id="name"><![CDATA[themes]]></item>
@@ -152,6 +152,24 @@
 				<item id="variable"><![CDATA[upload]]></item>
 				<item id="type"><![CDATA[radio]]></item>
 				<item id="value"><![CDATA[1]]></item>
+				<item id="extra"><![CDATA[]]></item>
+			</item>
+			<item id="12">
+				<item id="displayorder"><![CDATA[13]]></item>
+				<item id="title"><![CDATA[显示不在线好友]]></item>
+				<item id="description"><![CDATA[支持聊天列表中显示不在线好友]]></item>
+				<item id="variable"><![CDATA[show_unavailable]]></item>
+				<item id="type"><![CDATA[radio]]></item>
+				<item id="value"><![CDATA[1]]></item>
+				<item id="extra"><![CDATA[]]></item>
+			</item>
+			<item id="13">
+				<item id="displayorder"><![CDATA[14]]></item>
+				<item id="title"><![CDATA[支持访客聊天]]></item>
+				<item id="description"><![CDATA[支持未登录访客和管理员以及当前页用户聊天]]></item>
+				<item id="variable"><![CDATA[visitor]]></item>
+				<item id="type"><![CDATA[radio]]></item>
+				<item id="value"><![CDATA[]]></item>
 				<item id="extra"><![CDATA[]]></item>
 			</item>
 		</item>

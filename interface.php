@@ -70,10 +70,16 @@ unset( $_dbconfig );
 //	exit('"Access Denied"');
 //}
 
+$im_is_visitor = false;
+
 if ( $_G['uid'] ) {
 	webim_set_user();
 	$im_is_login = true;
 
+} else if ( $_IMC['visitor'] ) {
+	webim_set_visitor();
+	$im_is_login = true;
+	$im_is_visitor = true;
 } else {
 	$im_is_login = false;
 }
@@ -89,6 +95,31 @@ function profile_url( $id ) {
 
 function webim_get_menu () {
 	return array();
+}
+
+function webim_set_visitor(){
+	global $imuser;
+
+	if ( isset($_COOKIE['_webim_visitor_id']) ) {
+		$id = $_COOKIE['_webim_visitor_id'];
+	} else {
+		$id =  uniqid("vid:");
+		setcookie('_webim_visitor_id', $id, time() + 3600 * 24 * 30, "/", "");
+	}
+	//if ( isset($_COOKIE['_webim_visitor_nick']) ) {
+	//	$nick = $_COOKIE['_webim_visitor_nick'];
+	//} else {
+	//	$nick = 'v' . rand(1000000, 9999999);
+	//	setcookie('_webim_visitor_nick', $nick, time() + 3600 * 24 * 30, "/", "");
+	//}
+
+	$imuser->uid = null;
+	$imuser->id = $id;
+	//$imuser->nick = $nick;
+	$imuser->nick = $id;
+	$imuser->pic_url = (webim_urlpath() . "static/images/chat.png");
+	$imuser->show = webim_gp('show') ? webim_gp('show') : "available";
+	$imuser->url = "#";
 }
 
 function webim_set_user( $is_utf8 = false ){
@@ -142,18 +173,25 @@ foreach($friend_groups as $k => $v){
  *
  */
 function webim_get_online_buddies(){
-	global $friend_groups, $imuser;
+	global $friend_groups, $imuser, $im_is_visitor;
 	$list = array();
-	$query = DB::query("SELECT f.fuid uid, f.fusername username, p.realname name, f.gid 
-		FROM ".DB::table('home_friend')." f, ".DB::table('common_session')." s, ".DB::table('common_member_profile')." p
-		WHERE f.uid='$imuser->uid' AND f.fuid = s.uid AND p.uid = s.uid 
-		ORDER BY f.num DESC, f.dateline DESC");
+	if( $im_is_visitor ) {
+		$query = DB::query("SELECT m.uid, m.username, p.realname name FROM ".DB::table('common_member')." m
+			LEFT JOIN ".DB::table('common_member_profile')." p
+			ON m.uid = p.uid 
+			WHERE allowadmincp = 1");
+	} else {
+		$query = DB::query("SELECT f.fuid uid, f.fusername username, p.realname name, f.gid 
+			FROM ".DB::table('home_friend')." f, ".DB::table('common_member_profile')." p
+			WHERE f.uid='$imuser->uid' AND p.uid = f.uid 
+			ORDER BY f.num DESC, f.dateline DESC");
+	}
 	while ($value = DB::fetch($query)){
 		$list[] = (object)array(
 			"uid" => $value['uid'],
 			"id" => $value['username'],
 			"nick" => nick($value),
-			"group" => $friend_groups[$value['gid']],
+			"group" => isset($value['gid']) && $value['gid'] ? $friend_groups[$value['gid']] : "管理员",
 			"url" => profile_url( $value['uid'] ),
 			"pic_url" => avatar($value['uid'], 'small', true),
 		);
@@ -172,12 +210,22 @@ function webim_get_online_buddies(){
  */
 
 function webim_get_buddies( $names, $uids = null ){
-	global $friend_groups, $imuser;
+	global $friend_groups, $imuser, $im_is_visitor;
 	$where_name = "";
 	$where_uid = "";
 	if(!$names and !$uids)return array();
+	$visitors = array();
 	if($names){
-		$names = "'".implode("','", explode(",", $names))."'";
+		$ar = array();
+		$names = explode(",", $names);
+		foreach ($names as $v) {
+			if( strpos($v, "vid:") === 0 ) {
+				$visitors[] = $v;
+			} else {
+				$ar[] = $v;
+			}
+		}
+		$names = "'".implode("','", $ar)."'";
 		$where_name = "m.username IN ($names)";
 	}
 	if($uids){
@@ -186,23 +234,42 @@ function webim_get_buddies( $names, $uids = null ){
 	$where_sql = $where_name && $where_uid ? "($where_name OR $where_uid)" : ($where_name ? $where_name : $where_uid);
 
 	$list = array();
-	$query = DB::query("SELECT m.uid, m.username, p.realname name, f.gid FROM ".DB::table('common_member')." m
-		LEFT JOIN ".DB::table('home_friend')." f 
-		ON f.fuid = m.uid AND f.uid = $imuser->uid 
-		LEFT JOIN ".DB::table('common_member_profile')." p
-		ON m.uid = p.uid 
-		WHERE m.uid <> $imuser->uid AND $where_sql");
+	if( $im_is_visitor ) {
+		$query = DB::query("SELECT m.uid, m.username, p.realname name FROM ".DB::table('common_member')." m
+			LEFT JOIN ".DB::table('common_member_profile')." p
+			ON m.uid = p.uid 
+			WHERE $where_sql");
+	} else {
+		$query = DB::query("SELECT m.uid, m.username, p.realname name, f.gid FROM ".DB::table('common_member')." m
+			LEFT JOIN ".DB::table('home_friend')." f 
+			ON f.fuid = m.uid AND f.uid = $imuser->uid 
+			LEFT JOIN ".DB::table('common_member_profile')." p
+			ON m.uid = p.uid 
+			WHERE m.uid <> $imuser->uid AND $where_sql");
+	}
 	while ( $value = DB::fetch( $query ) ){
 		$list[] = (object)array(
 			"uid" => $value['uid'],
 			"id" => $value['username'],
 			"nick" => nick($value),
-			"group" => $value['gid'] ? $friend_groups[$value['gid']] : "stranger",
+			"group" => isset($value['gid']) && $value['gid'] ? $friend_groups[$value['gid']] : "stranger",
 			"url" => profile_url( $value['uid'] ),
 			"pic_url" => avatar($value['uid'], 'small', true),
 		);
 	}
 	complete_status( $list );
+
+	if( count( $visitors ) ) {
+		foreach ($visitors as $val) {
+			$list[] = (object)array(
+				"id" => $val,
+				"nick" => $val,
+				"group" => "访客",
+				"url" => "#",
+				"pic_url" => (webim_urlpath() . "static/images/chat.png"),
+			);
+		}
+	}
 	return $list;
 }
 
@@ -213,7 +280,10 @@ function webim_get_buddies( $names, $uids = null ){
  */
 
 function webim_get_rooms($ids=null){
-	global $imuser, $site_url;
+	global $imuser, $site_url, $im_is_visitor;
+	if( $im_is_visitor ) {
+		return array();
+	}
 	if(!$ids){
 		$query = DB::query("SELECT fid FROM ".DB::table("forum_groupuser")." WHERE uid=$imuser->uid");
 		while ($value = DB::fetch($query)){
