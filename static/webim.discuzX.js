@@ -5,8 +5,8 @@
  * Copyright (c) 2013 Arron
  * Released under the MIT, BSD, and GPL Licenses.
  *
- * Date: Tue Sep 17 17:33:53 2013 +0800
- * Commit: 9bb0296f5de5fe6bb0b0985db98c9d72d49f585c
+ * Date: Wed Sep 18 21:10:11 2013 +0800
+ * Commit: 0b37f2df9f6ca19abbb5f40df0b502a07fc0c4ce
  */
 (function(window, document, undefined){
 
@@ -1424,7 +1424,7 @@ extend(webim.prototype, {
 		}
 
 		function grepPresence( a ){
-			return a.type == "online" || a.type == "offline";
+			return a.type == "online" || a.type == "offline" || a.type == "show";
 		}
 		function grepRoomPresence( a ){
 			return a.type == "join" || a.type == "leave";
@@ -2133,8 +2133,8 @@ model("history", {
  * Copyright (c) 2013 Arron
  * Released under the MIT, BSD, and GPL Licenses.
  *
- * Date: Tue Sep 17 17:34:15 2013 +0800
- * Commit: 7c986005605ef7a26e6a6abf4749775998e08200
+ * Date: Wed Sep 18 21:17:21 2013 +0800
+ * Commit: 650e9cdb52d409dcb05e8b2acd375f3f4457712c
  */
 (function(window,document,undefined){
 
@@ -5132,6 +5132,7 @@ app("buddy", function( options ){
 	//some buddies online.
 	buddy.bind("online", function( e, data){
 		buddyUI.add(grep(data, grepVisible));
+		buddyUI.update(data);
 	});
 	//some buddies offline.
 	buddy.bind("offline", function( e, data){
