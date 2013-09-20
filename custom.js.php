@@ -10,7 +10,6 @@ $webim_jsonp = isset( $_GET['remote'] ) || webim_is_remote();
 $webim_path = webim_urlpath();
 #$webim_path = "source/plugin/webim/";
 
-
 if ( !$im_is_login && !$_IMC['enable_login'] ) {
 	exit('"Please login at first."');
 }
