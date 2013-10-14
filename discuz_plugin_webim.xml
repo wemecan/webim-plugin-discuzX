@@ -7,11 +7,11 @@
 		<item id="plugin">
 			<item id="available"><![CDATA[1]]></item>
 			<item id="adminid"><![CDATA[0]]></item>
-			<item id="name"><![CDATA[nextalk]]></item>
-			<item id="identifier"><![CDATA[NexTalk]]></item>
+			<item id="name"><![CDATA[webim]]></item>
+			<item id="identifier"><![CDATA[webim]]></item>
 			<item id="description"><![CDATA[]]></item>
 			<item id="datatables"><![CDATA[]]></item>
-			<item id="directory"><![CDATA[nextalk/]]></item>
+			<item id="directory"><![CDATA[webim/]]></item>
 			<item id="copyright"><![CDATA[nextalk.im]]></item>
 			<item id="version"><![CDATA[@VERSION]]></item>
 			<item id="__modules">
