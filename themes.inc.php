@@ -20,7 +20,8 @@ function webim_scan_subdir( $dir ){
 }
 
 //$sl = $scriptlang['webim'];
-$tl = $templatelang['webim'];
+//$tl = $templatelang['webim'];
+$tl = $scriptlang['webim'];
 $notice = "";
 
 if($_G['gp_theme']){

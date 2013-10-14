@@ -13,7 +13,8 @@ if(!defined('IN_DISCUZ') || !defined('IN_ADMINCP')) {
 require_once( dirname( __FILE__ ) . '/' . 'common.php' );
 
 //$sl = $scriptlang['webim'];
-$tl = $templatelang['webim'];
+//$tl = $templatelang['webim'];
+$tl = $scriptlang['webim'];
 $notice = "";
 
 if( $_G['gp_period'] ){
