@@ -190,14 +190,6 @@
 				<item id="clear_3monthago"><![CDATA[清理三个月前的记录]]></item>
 			</item>
 			<item id="templatelang">
-				<item id="example"><![CDATA[示例]]></item>
-				<item id="themes_tips"><![CDATA[选择你喜欢的主题，点击便可立即更换]]></item>
-				<item id="themes_success"><![CDATA[主题更新成功，您可以更新DiscuzX页面查看效果。]]></item>
-				<item id="histories_num"><![CDATA[网站目前聊天记录条数]]></item>
-				<item id="clear_all"><![CDATA[清理所有聊天记录]]></item>
-				<item id="clear_weekago"><![CDATA[清理一周前的记录]]></item>
-				<item id="clear_monthago"><![CDATA[清理一个月前的记录]]></item>
-				<item id="clear_3monthago"><![CDATA[清理三个月前的记录]]></item>
 			</item>
 		</item>
 	</item>

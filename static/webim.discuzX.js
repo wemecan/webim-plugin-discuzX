@@ -2133,8 +2133,8 @@ model("history", {
  * Copyright (c) 2013 Arron
  * Released under the MIT, BSD, and GPL Licenses.
  *
- * Date: Mon Oct 14 20:31:29 2013 +0800
- * Commit: 17b18246068a03d2eb0e51838cd82bd0e22af266
+ * Date: Mon Oct 14 22:13:31 2013 +0800
+ * Commit: ec396a858bdd428b5c6e5fee9c780a4d639d9c08
  */
 (function(window,document,undefined){
 
@@ -2581,60 +2581,81 @@ function upload( element, callback ){
 
 
 var sound = (function(){
-        var playSound = true;
-        var play = function(url){
-            try {
-                document.getElementById('webim-flashlib').playSound(url ? url : '/sound/sound.mp3');
-            } 
-            catch (e){
-            }
-        };
-        var _urls = {
-                lib: "sound.swf",
-                msg:"sound/msg.mp3"
-        };
-        return {
-                enable:function(){
-                        playSound = true;
-                },
-                disable:function(){
-                        playSound = false;
-                },
-                init: function(urls){
-                        extend(_urls, urls);
-			/*
-                        swfobject.embedSWF(_urls.lib + "?_" + new Date().getTime(), "webim-flashlib-c", "100", "100", "9.0.0", null, null, {
-                        allowscriptaccess:'always'
-                        }, {
-                            id: 'webim-flashlib'
-                        });
-			*/
-			var lib_url = _urls.lib + "?_" + new Date().getTime();
-			if (navigator.plugins && navigator.mimeTypes && navigator.mimeTypes.length) { // netscape plugin architecture
-				var html = '<embed type="application/x-shockwave-flash" width="10" height="10" id="webim-flashlib" allowscriptaccess="always" src="'+lib_url+'" />';
-			}else{
-				var html = '<object width="10" height="10" id="webim-flashlib" type="application/x-shockwave-flash" data="'+ lib_url + '">\
-				<param name="allowScriptAccess" value="always" />\
-				<param name="movie" value="'+lib_url+'" />\
-				<param name="scale" value="noscale" />\
-				</object>';
+	var playSound = true;
+	var webimAudio;
+	var play = function(url){
+		if( window.Audio ) {
+			if( !webimAudio ) {
+				var webimAudio = new Audio();
 			}
+			webimAudio.src = url;
+			webimAudio.play();
+		}else if(navigator.userAgent.indexOf('MSIE') >= 0){
 			try {
-				document.getElementById('webim-flashlib-c').innerHTML = html;
+				document.getElementById('webim-bgsound').src = url ? url : '/sound/sound.mp3';
 			} 
 			catch (e){
 			}
+		}
+		/*
+		 try {
+		 document.getElementById('webim-flashlib').playSound(url ? url : '/sound/sound.mp3');
+		 } 
+		 catch (e){
+		 }
+		 */
+	};
+	var _urls = {
+		lib: "sound.swf",
+		msg:"sound/msg.mp3"
+	};
+	return {
+		enable:function(){
+			playSound = true;
 		},
-                play: function(type){
-                        var url = isUrl(type) ? type : _urls[type];
-                        playSound && play(url);
-                }
-        }
+		disable:function(){
+			playSound = false;
+		},
+		init: function(urls){
+			extend(_urls, urls);
+			if(!window.Audio && navigator.userAgent.indexOf('MSIE') >= 0){
+				document.getElementById('webim-flashlib-c').innerHTML = '<bgsound id="webim-bgsound" src="#" loop="1">';
+			}
+			/*
+			 swfobject.embedSWF(_urls.lib + "?_" + new Date().getTime(), "webim-flashlib-c", "100", "100", "9.0.0", null, null, {
+			 allowscriptaccess:'always'
+			 }, {
+			 id: 'webim-flashlib'
+			 });
+			 */
+			/*
+			 var lib_url = _urls.lib + "?_" + new Date().getTime();
+			 if (navigator.plugins && navigator.mimeTypes && navigator.mimeTypes.length) { // netscape plugin architecture
+			 var html = '<embed type="application/x-shockwave-flash" width="10" height="10" id="webim-flashlib" allowscriptaccess="always" src="'+lib_url+'" />';
+			 }else{
+			 var html = '<object width="10" height="10" id="webim-flashlib" type="application/x-shockwave-flash" data="'+ lib_url + '">\
+			 <param name="allowScriptAccess" value="always" />\
+			 <param name="movie" value="'+lib_url+'" />\
+			 <param name="scale" value="noscale" />\
+			 </object>';
+			 }
+			 try {
+			 document.getElementById('webim-flashlib-c').innerHTML = html;
+			 } 
+			 catch (e){
+			 }
+			 */
+		},
+		play: function(type){
+			var url = isUrl(type) ? type : _urls[type];
+			playSound && play(url);
+		}
+	}
 })();
 
 /*
-* set display frequency.
-*/
+ * set display frequency.
+ */
 var titleShow = (function(){
 	var _showNoti = false;
 	addEvent(window,"focus",function(){
