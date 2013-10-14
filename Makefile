@@ -33,6 +33,7 @@ ${CACHE_DIR}: ${LIB_DIR}/webim.class.php
 	@@echo "Copy source"
 	@@cp -r ${SRC_FILES} ${CACHE_DIR}
 	@@rm -rf ${CACHE_DIR}/lib/.git
+	@@rm -rf ${CACHE_DIR}/static/themes/bootstrap
 	@@echo "Change version"
 	@@cat ${SRC_DIR}/config.php | ${REPLACE_VER} > ${CACHE_DIR}/config.php
 	@@cat ${SRC_DIR}/common.php | ${REPLACE_VER} > ${CACHE_DIR}/common.php
