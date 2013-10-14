@@ -5,8 +5,8 @@
  * Copyright (c) 2013 Arron
  * Released under the MIT, BSD, and GPL Licenses.
  *
- * Date: Wed Sep 18 21:17:21 2013 +0800
- * Commit: 650e9cdb52d409dcb05e8b2acd375f3f4457712c
+ * Date: Mon Oct 14 18:32:53 2013 +0800
+ * Commit: 754a032b1e953d83cbb47d06e6d3817befc5137a
  */
 
 body {
@@ -423,7 +423,7 @@ a .webim-icon, a .ui-icon{
         z-index: 6;
         float:left;
         cursor: pointer;
-        height: 2.2em;
+        height: 26px;
         display: block;
         position: relative;
         border-width: 0;

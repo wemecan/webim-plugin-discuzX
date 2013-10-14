@@ -2133,8 +2133,8 @@ model("history", {
  * Copyright (c) 2013 Arron
  * Released under the MIT, BSD, and GPL Licenses.
  *
- * Date: Wed Sep 18 21:17:21 2013 +0800
- * Commit: 650e9cdb52d409dcb05e8b2acd375f3f4457712c
+ * Date: Mon Oct 14 18:32:53 2013 +0800
+ * Commit: 754a032b1e953d83cbb47d06e6d3817befc5137a
  */
 (function(window,document,undefined){
 
@@ -3503,7 +3503,18 @@ widget("layout",{
 		var w = (windowWidth() - 45) - $.shortcut.offsetWidth - $.widgets.offsetWidth - 70;
 		self.maxVisibleTabs = parseInt(w / self.tabWidth);
 		self._fitUI();
+		self._autoResizeWindow();
 		self._ready = true;
+	},
+	_autoResizeWindow: function(){
+		var self = this, $ = self.$
+		  , width = $.widgets.offsetWidth;
+		for( var key in self.widgets ) {
+			var window = self.widgets[key] && self.widgets[key].window;
+			window = window && window.$ && window.$.window;
+			if( window )
+				window.style.width = width + "px";
+		}
 	},
 	_updatePrevCount: function(activeId){
 		var self = this, tabIds = self.tabIds, max = self.maxVisibleTabs, len = tabIds.length, id = activeId, count = self.prevCount;
@@ -5912,6 +5923,7 @@ widget("chatlink",
 
 		function parse_id(link, re){
 			if(!link)return false;
+			if(!re)return false;
 			var re_len = re.length; 
 			for(var i = 0; i < re_len; i++){
 				var ex = re[i].exec(link);
@@ -5967,7 +5979,7 @@ widget("chatlink",
 		var self = this, list = self.list, anthors = self.anthors, l = data.length, i, da, uid, li, anthor;
 		for(i = 0; i < l; i++){
 			da = data[i];
-			if(da.id && (uid = da.uid) && (li = list[uid])){
+			if(da.id && (uid = da.uid || da.id) && (li = list[uid])){
 				anthor = anthors[uid];
 				if(!li.elements && anthor){
 					li.elements = [];
@@ -5990,7 +6002,7 @@ widget("chatlink",
 		var self = this, list = self.list, anthors = self.anthors, l = data.length, i, da, uid, li, anthor;
 		for(i = 0; i < l; i++){
 			da = data[i];
-			if(da.id && (uid = da.uid) && (li = list[uid])){
+			if(da.id && (uid = da.uid || da.id) && (li = list[uid])){
 				li.elements && each(li.elements, function(n, v){
 					remove(v);
 				});
