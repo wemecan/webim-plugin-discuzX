@@ -17,7 +17,7 @@ require_once( dirname( __FILE__ ) . '/' . 'common.php' );
 $tl = $scriptlang['webim'];
 $notice = "";
 
-if( $_G['gp_period'] ){
+if( $_G['gp_period'] && submitcheck('submit') ){
 
 	switch ( $_G['gp_period'] ) {
 	case 'weekago':
