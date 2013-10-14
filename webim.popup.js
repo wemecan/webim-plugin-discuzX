@@ -51,7 +51,6 @@
 	ui.addApp("buddy", {
 		is_login: _IMC['is_login'],
 		//	loginOptions: _IMC['login_options']
-		title: "好友列表",
 		userOptions: {show: true},
 		showUnavailable: _IMC.showUnavailable,
 		disable_group: false

@@ -191,7 +191,7 @@ function webim_get_online_buddies(){
 			"uid" => $value['uid'],
 			"id" => $value['username'],
 			"nick" => nick($value),
-			"group" => isset($value['gid']) && $value['gid'] ? $friend_groups[$value['gid']] : "管理员",
+			"group" => isset($value['gid']) && $value['gid'] ? $friend_groups[$value['gid']] : "manager",
 			"url" => profile_url( $value['uid'] ),
 			"pic_url" => avatar($value['uid'], 'small', true),
 		);
@@ -264,7 +264,7 @@ function webim_get_buddies( $names, $uids = null ){
 			$list[] = (object)array(
 				"id" => $val,
 				"nick" => $val,
-				"group" => "访客",
+				"group" => "visitor",
 				"url" => "#",
 				"pic_url" => (webim_urlpath() . "static/images/chat.png"),
 			);
