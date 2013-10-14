@@ -136,15 +136,6 @@
 				<item id="value"><![CDATA[0]]></item>
 				<item id="extra"><![CDATA[]]></item>
 			</item>
-			<item id="10">
-				<item id="displayorder"><![CDATA[11]]></item>
-				<item id="title"><![CDATA[支持从IM登录]]></item>
-				<item id="description"><![CDATA[允许未登录时显示IM，并可从im登录]]></item>
-				<item id="variable"><![CDATA[enable_login]]></item>
-				<item id="type"><![CDATA[radio]]></item>
-				<item id="value"><![CDATA[0]]></item>
-				<item id="extra"><![CDATA[]]></item>
-			</item>
 			<item id="11">
 				<item id="displayorder"><![CDATA[12]]></item>
 				<item id="title"><![CDATA[文件图片上传]]></item>
@@ -170,6 +161,15 @@
 				<item id="variable"><![CDATA[visitor]]></item>
 				<item id="type"><![CDATA[radio]]></item>
 				<item id="value"><![CDATA[]]></item>
+				<item id="extra"><![CDATA[]]></item>
+			</item>
+			<item id="14">
+				<item id="displayorder"><![CDATA[15]]></item>
+				<item id="title"><![CDATA[不显示通知窗口]]></item>
+				<item id="description"><![CDATA[diszcuzX默认不显示通知窗口，如显示，需要自己提供通知接口]]></item>
+				<item id="variable"><![CDATA[disable_noti]]></item>
+				<item id="type"><![CDATA[radio]]></item>
+				<item id="value"><![CDATA[1]]></item>
 				<item id="extra"><![CDATA[]]></item>
 			</item>
 		</item>

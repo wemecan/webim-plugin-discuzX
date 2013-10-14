@@ -47,10 +47,11 @@
 	ui.addApp("buddy", {
 		showUnavailable: _IMC.showUnavailable,
 		is_login: _IMC['is_login'],
+		disable_login: true,
 		loginOptions: _IMC['login_options']
 	} );
-	ui.addApp("room");
-	ui.addApp("notification");
+	if( !_IMC.disable_room )ui.addApp("room");
+	if( !_IMC.disable_noti )ui.addApp("notification");
 	ui.addApp("setting", {"data": webim.setting.defaults.data});
 	if( !_IMC.disable_chatlink )ui.addApp("chatlink", {
 		space_href: [/mod=space&uid=(\d+)/i, /space\-uid\-(\d+)\.html$/i],
