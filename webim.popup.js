@@ -56,7 +56,7 @@
 		disable_group: false
 	} );
 
-	ui.addApp("room");
+	if( !_IMC.disable_room )ui.addApp("room", { discussion: true });
 	ui.addApp("setting", {"data": {
 		play_sound: webim.setting.defaults.data.play_sound
 	}});
