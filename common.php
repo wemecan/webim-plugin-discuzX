@@ -16,7 +16,7 @@ if( isset( $_IMC['debug'] ) ) {
 	if ( !defined( 'WEBIMDB_DEBUG' ) )
 		define( 'WEBIMDB_DEBUG', true );
 } else {
-	error_reporting( E_ALL ^ E_NOTICE );
+	error_reporting( E_ALL & ~E_NOTICE & ~E_STRICT & ~E_DEPRECATED );
 }
 
 if ( !defined( 'WEBIMDB_DEBUG' ) )

@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <root>
 	<item id="Title"><![CDATA[Discuz! Plugin]]></item>
-	<item id="Version"><![CDATA[X3,X2.5,X2,X1.5,X1.5.1,X1]]></item>
-	<item id="Time"><![CDATA[2013-09-25 21:59]]></item>
+	<item id="Version"><![CDATA[X3.1,X3,X2.5,X2,X1.5,X1.5.1,X1]]></item>
+	<item id="Time"><![CDATA[2013-11-12 21:59]]></item>
 	<item id="Data">
 		<item id="plugin">
 			<item id="available"><![CDATA[1]]></item>
 			<item id="adminid"><![CDATA[0]]></item>
-			<item id="name"><![CDATA[webim]]></item>
+			<item id="name"><![CDATA[DiscuzX站内即时消息]]></item>
 			<item id="identifier"><![CDATA[webim]]></item>
-			<item id="description"><![CDATA[]]></item>
+			<item id="description"><![CDATA[简单、专业的DiscuzX社区站内即时消息插件]]></item>
 			<item id="datatables"><![CDATA[]]></item>
 			<item id="directory"><![CDATA[webim/]]></item>
 			<item id="copyright"><![CDATA[nextalk.im]]></item>
@@ -47,7 +47,7 @@
 			<item id="0">
 				<item id="displayorder"><![CDATA[1]]></item>
 				<item id="title"><![CDATA[注册域名]]></item>
-				<item id="description"><![CDATA[在线版用户输入在nextalk.im(webim20.cn)中注册的域名]]></item>
+				<item id="description"><![CDATA[在线版用户输入在nextalk.im注册的域名]]></item>
 				<item id="variable"><![CDATA[domain]]></item>
 				<item id="type"><![CDATA[text]]></item>
 				<item id="value"><![CDATA[]]></item>
@@ -68,7 +68,7 @@
 				<item id="description"><![CDATA[]]></item>
 				<item id="variable"><![CDATA[host]]></item>
 				<item id="type"><![CDATA[text]]></item>
-				<item id="value"><![CDATA[webim20.cn]]></item>
+				<item id="value"><![CDATA[nextalk.im]]></item>
 				<item id="extra"><![CDATA[]]></item>
 			</item>
 			<item id="3">
@@ -173,7 +173,7 @@
 				<item id="extra"><![CDATA[]]></item>
 			</item>
 		</item>
-		<item id="intro"><![CDATA[NexTalk是为DiscuzX社区用户打造的站内网页版即时聊天工具，用户通过聊天工具栏可随即与在线好友聊天。免费版用户安装后需要到nextalk.im(webim20.cn)注册一个apikey，配置后即可使用。更多帮助信息请访问 [url=http://nextalk.im]nextalk.im(webim20.cn)[/url]
+		<item id="intro"><![CDATA[NexTalk.IM为DiscuzX社区用户打造的站内网页版即时聊天工具(Webim)，用户通过聊天工具栏可随即与在线好友聊天。免费版用户安装后需要到nextalk.im注册一个apikey，配置后即可使用。更多帮助信息请访问 [url=http://nextalk.im]nextalk.im(webim20.cn)[/url]
 			[img]http://nextalk.im/static/img/screenshots/discuzx.png[/img]
 			]]></item>
 		<item id="installfile"><![CDATA[install.php]]></item>
