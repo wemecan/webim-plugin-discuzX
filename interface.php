@@ -103,7 +103,7 @@ function webim_set_visitor(){
 	if ( isset($_COOKIE['_webim_visitor_id']) ) {
 		$id = $_COOKIE['_webim_visitor_id'];
 	} else {
-		$id =  uniqid("vid:");
+		$id =  uniqid();
 		setcookie('_webim_visitor_id', $id, time() + 3600 * 24 * 30, "/", "");
 	}
 	//if ( isset($_COOKIE['_webim_visitor_nick']) ) {
