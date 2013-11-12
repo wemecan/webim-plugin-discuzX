@@ -14,7 +14,6 @@ REPLACE_VER= sed s/@VERSION/${VERSION}/
 
 SRC_FILES = ${SRC_DIR}/*.php \
 	    ${SRC_DIR}/*.md \
-	    ${SRC_DIR}/*.txt \
 	    ${SRC_DIR}/*.js \
 	    ${SRC_DIR}/lib \
 	    ${SRC_DIR}/static \
