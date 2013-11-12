@@ -103,21 +103,13 @@ function webim_set_visitor(){
 	if ( isset($_COOKIE['_webim_visitor_id']) ) {
 		$id = $_COOKIE['_webim_visitor_id'];
 	} else {
-		$id =  uniqid();
+		$id =  substr(uniqid(), 6);
 		setcookie('_webim_visitor_id', $id, time() + 3600 * 24 * 30, "/", "");
 	}
-	//if ( isset($_COOKIE['_webim_visitor_nick']) ) {
-	//	$nick = $_COOKIE['_webim_visitor_nick'];
-	//} else {
-	//	$nick = 'v' . rand(1000000, 9999999);
-	//	setcookie('_webim_visitor_nick', $nick, time() + 3600 * 24 * 30, "/", "");
-	//}
-
-	$imuser->uid = null;
-	$imuser->id = $id;
-	//$imuser->nick = $nick;
-	$imuser->nick = $id;
-	$imuser->pic_url = (webim_urlpath() . "static/images/chat.png");
+	$imuser->uid = "vid:".$id;
+	$imuser->id = "vid:".$id;
+	$imuser->nick = "v".$id;
+	$imuser->pic_url = avatar($imuser->uid, 'small', true);
 	$imuser->show = webim_gp('show') ? webim_gp('show') : "available";
 	$imuser->url = "#";
 }
@@ -263,10 +255,11 @@ function webim_get_buddies( $names, $uids = null ){
 		foreach ($visitors as $val) {
 			$list[] = (object)array(
 				"id" => $val,
-				"nick" => $val,
+				"nick" => "v".substr($val, 4), //remove vid:
 				"group" => "visitor",
 				"url" => "#",
 				"pic_url" => (webim_urlpath() . "static/images/chat.png"),
+				"status" => "网站访客", 
 			);
 		}
 	}
