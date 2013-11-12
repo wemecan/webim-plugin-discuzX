@@ -50,7 +50,7 @@
 		disable_login: true,
 		loginOptions: _IMC['login_options']
 	} );
-	if( !_IMC.disable_room )ui.addApp("room", { discussion: true });
+	if( !_IMC.disable_room )ui.addApp("room", { discussion: false}); //TODO: 
 	if( !_IMC.disable_noti )ui.addApp("notification");
 	ui.addApp("setting", {"data": webim.setting.defaults.data});
 	if( !_IMC.disable_chatlink )ui.addApp("chatlink", {
