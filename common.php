@@ -44,7 +44,7 @@ require_once( WEBIM_PATH . 'lib/class.webim_client.php' );
  * boolean $im_is_login
  * object $imuser require when $im_is_login is true
  * function webim_get_buddies( $ids )
- * function webim_get_menu() require when !$_IMC['disable_menu']
+ * function webim_get_menu() require when !$_IMC['enable_menu']
  * function webim_get_online_buddies()
  * function webim_get_rooms( $ids )
  * function webim_get_notifications()

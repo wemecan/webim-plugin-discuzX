@@ -24,7 +24,7 @@ if ( $im_is_login ) {
 	$imuser = "";
 }
 
-if ( !$_IMC['disable_menu'] )
+if ( $_IMC['enable_menu'] )
 	$menu = json_encode( webim_get_menu() );
 
 ?>
@@ -36,12 +36,12 @@ is_login: '<?php echo $im_is_login ? "1" : "" ?>',
 login_options: "",
 user: <?php echo $imuser ? $imuser : '""'; ?>,
 setting: <?php echo $setting ? $setting : '""'; ?>,
-menu: <?php echo !$_IMC['disable_menu'] ? $menu : '""'; ?>,
-disable_chatlink: '<?php echo $_IMC['disable_chatlink'] ? "1" : "" ?>',
+menu: <?php echo $_IMC['enable_menu'] ? $menu : '""'; ?>,
+enable_chatlink: '<?php echo $_IMC['enable_chatlink'] ? "1" : "" ?>',
 enable_shortcut: '<?php echo $_IMC['enable_shortcut'] ? "1" : "" ?>',
-disable_menu: '<?php echo $_IMC['disable_menu'] ? "1" : "" ?>',
-disable_room: '<?php echo $_IMC['disable_room'] ? "1" : "" ?>',
-disable_noti: '<?php echo $_IMC['disable_noti'] ? "1" : "" ?>',
+enable_menu: '<?php echo $_IMC['enable_menu'] ? "1" : "" ?>',
+enable_room: '<?php echo $_IMC['enable_room'] ? "1" : "" ?>',
+enable_noti: '<?php echo $_IMC['enable_noti'] ? "1" : "" ?>',
 theme: '<?php echo $_IMC['theme']; ?>',
 local: '<?php echo $_IMC['local']; ?>',
 upload: '<?php echo $_IMC['upload']; ?>',
