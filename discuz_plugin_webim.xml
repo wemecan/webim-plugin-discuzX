@@ -7,9 +7,9 @@
 		<item id="plugin">
 			<item id="available"><![CDATA[1]]></item>
 			<item id="adminid"><![CDATA[0]]></item>
-			<item id="name"><![CDATA[DiscuzX站内即时消息]]></item>
+			<item id="name"><![CDATA[NexTalk站内聊天]]></item>
 			<item id="identifier"><![CDATA[webim]]></item>
-			<item id="description"><![CDATA[简单、专业的DiscuzX社区站内即时消息插件]]></item>
+			<item id="description"><![CDATA[简单、专业的DiscuzX社区站内聊天插件]]></item>
 			<item id="datatables"><![CDATA[]]></item>
 			<item id="directory"><![CDATA[webim/]]></item>
 			<item id="copyright"><![CDATA[nextalk.im]]></item>
@@ -64,7 +64,7 @@
 			</item>
 			<item id="2">
 				<item id="displayorder"><![CDATA[3]]></item>
-				<item id="title"><![CDATA[IM服务器]]></item>
+				<item id="title"><![CDATA[消息服务器]]></item>
 				<item id="description"><![CDATA[]]></item>
 				<item id="variable"><![CDATA[host]]></item>
 				<item id="type"><![CDATA[text]]></item>
@@ -73,7 +73,7 @@
 			</item>
 			<item id="3">
 				<item id="displayorder"><![CDATA[4]]></item>
-				<item id="title"><![CDATA[IM服务器端口]]></item>
+				<item id="title"><![CDATA[消息服务器端口]]></item>
 				<item id="description"><![CDATA[]]></item>
 				<item id="variable"><![CDATA[port]]></item>
 				<item id="type"><![CDATA[text]]></item>
