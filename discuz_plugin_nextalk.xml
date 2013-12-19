@@ -8,10 +8,10 @@
 			<item id="available"><![CDATA[1]]></item>
 			<item id="adminid"><![CDATA[0]]></item>
 			<item id="name"><![CDATA[NexTalk站内聊天]]></item>
-			<item id="identifier"><![CDATA[webim]]></item>
+			<item id="identifier"><![CDATA[nextalk]]></item>
 			<item id="description"><![CDATA[简单、专业的DiscuzX社区站内聊天插件]]></item>
 			<item id="datatables"><![CDATA[]]></item>
-			<item id="directory"><![CDATA[webim/]]></item>
+			<item id="directory"><![CDATA[nextalk/]]></item>
 			<item id="copyright"><![CDATA[nextalk.im]]></item>
 			<item id="version"><![CDATA[@VERSION]]></item>
 			<item id="__modules">
@@ -24,7 +24,7 @@
 					<item id="displayorder"><![CDATA[0]]></item>
 				</item>
 				<item id="1">
-					<item id="name"><![CDATA[webim]]></item>
+					<item id="name"><![CDATA[nextalk]]></item>
 					<item id="menu"><![CDATA[]]></item>
 					<item id="url"><![CDATA[]]></item>
 					<item id="type"><![CDATA[11]]></item>
@@ -139,7 +139,7 @@
 			<item id="11">
 				<item id="displayorder"><![CDATA[12]]></item>
 				<item id="title"><![CDATA[文件图片上传]]></item>
-				<item id="description"><![CDATA[支持聊天时上传文件和图片，安装时请修改webim插件目录中的"static/images/files/"为可写]]></item>
+				<item id="description"><![CDATA[支持聊天时上传文件和图片，安装时请修改NexTalk插件目录中的"static/images/files/"为可写]]></item>
 				<item id="variable"><![CDATA[upload]]></item>
 				<item id="type"><![CDATA[radio]]></item>
 				<item id="value"><![CDATA[1]]></item>
@@ -173,7 +173,7 @@
 				<item id="extra"><![CDATA[]]></item>
 			</item>
 		</item>
-		<item id="intro"><![CDATA[NexTalk.IM为DiscuzX社区用户打造的站内网页版即时聊天工具(Webim)，用户通过聊天工具栏可随即与在线好友聊天。免费版用户安装后需要到nextalk.im注册一个apikey，配置后即可使用。更多帮助信息请访问 [url=http://nextalk.im]nextalk.im(webim20.cn)[/url]
+		<item id="intro"><![CDATA[NexTalk.IM为DiscuzX社区用户打造的站内网页版即时聊天工具(WebIM)，用户通过聊天工具栏可随即与在线好友聊天。免费版用户安装后需要到nextalk.im注册一个apikey，配置后即可使用。更多帮助信息请访问 [url=http://nextalk.im]nextalk.im[/url]
 			[img]http://nextalk.im/static/img/screenshots/discuzx.png[/img]
 			]]></item>
 		<item id="installfile"><![CDATA[install.php]]></item>

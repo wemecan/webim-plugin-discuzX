@@ -1,4 +1,4 @@
-WebIM For DiscuzX
+NexTalk For DiscuzX
 =================================
 
 为DiscuzX社区开发的网页版即时聊天工具，用户通过聊天工具栏可随即与在线好友聊天。
