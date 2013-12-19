@@ -58,14 +58,14 @@ $_IMC["port"] = 8000;
 
 /*
 |--------------------------------------------------------------------------
-| 界面主题，根据webim/static/themes/目录内容选择
+| 界面主题，根据nextalk/static/themes/目录内容选择
 |--------------------------------------------------------------------------
 */
 $_IMC["theme"] = "base";
 
 /*
 |--------------------------------------------------------------------------
-| 本地语言，扩展请修改webim/static/i18n/内容
+| 本地语言，扩展请修改nextalk/static/i18n/内容
 |--------------------------------------------------------------------------
 */
 $_IMC["local"] = "zh-CN";
@@ -165,7 +165,7 @@ $_IMC["enable_noti"] = true;
 
 $query = DB::query("SELECT v.* FROM ".DB::table('common_pluginvar')." v, 
 	".DB::table('common_plugin')." p 
-	WHERE p.identifier='webim' AND v.pluginid = p.pluginid");
+	WHERE p.identifier='nextalk' AND v.pluginid = p.pluginid");
 while($var = DB::fetch($query)){
 	if(isset($var['value'])){
 		$_IMC[$var['variable']] = empty( $var['value'] ) ? false : $var['value'];
