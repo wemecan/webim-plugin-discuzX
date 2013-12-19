@@ -15,15 +15,15 @@ NexTalk For DiscuzX
 升级
 ---------------------------------
 
-1.	覆盖安装目录webim/内容到source/plugin/webim/
-2.	到DiscuzX后台管理界面更新webim插件
+1.	覆盖安装目录webim/内容到source/plugin/nextalk/
+2.	到DiscuzX后台管理界面更新nextalk插件
 
 
 安装
 ---------------------------------
 
 1.	解压安装包到DiscuzX插件目录source/plugin/
-2.	登录DiscuzX管理后台安装新插件webim
+2.	登录DiscuzX管理后台安装新插件nextalk
 3.	在配置中设置在nextalk.im(原webim20.cn)注册的域名和apikey
 4.	启用插件
 5.	给予上传文件目录可写权限: chmod -R 777 static/images/files/

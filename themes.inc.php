@@ -49,8 +49,8 @@ foreach ($files as $k => $v){
 	$t_path = $path.DIRECTORY_SEPARATOR.$v;
 	if(is_dir($t_path) && is_file($t_path.DIRECTORY_SEPARATOR."jquery.ui.theme.css")){
 		$cur = $v == $theme ? " class='current'" : "";
-		$url = ADMINSCRIPT.'?action=plugins&operation=config&do='.$pluginid.'&identifier=webim&pmod=themes&theme='.$v;
-		$html .= "<li$cur><h4><a href='$url'>$v</a></h4><p><a href='$url'><img width=100 height=134 src='source/plugin/webim/static/themes/images/$v.png' alt='$v' title='$v'/></a></p></li>";
+		$url = ADMINSCRIPT.'?action=plugins&operation=config&do='.$pluginid.'&identifier=nextalk&pmod=themes&theme='.$v;
+		$html .= "<li$cur><h4><a href='$url'>$v</a></h4><p><a href='$url'><img width=100 height=134 src='source/plugin/nextalk/static/themes/images/$v.png' alt='$v' title='$v'/></a></p></li>";
 	}
 }
 $html .= '</ul>';

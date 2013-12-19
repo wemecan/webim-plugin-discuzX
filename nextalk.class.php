@@ -9,11 +9,11 @@ if(!defined('IN_DISCUZ')) {
 	exit('Access Denied');
 }
 
-class plugin_webim {
+class plugin_nextalk {
 
 	function global_footer() {
 		global $_G;
-		return '<script src="source/plugin/webim/custom.js.php" type="text/javascript"></script>';
+		return '<script src="source/plugin/nextalk/custom.js.php" type="text/javascript"></script>';
 	}
 }
 

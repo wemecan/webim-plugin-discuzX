@@ -28,8 +28,6 @@ CREATE TABLE cdb_webim_histories (
 	`created_at` TIMESTAMP NULL DEFAULT NULL,
 	`updated_at` TIMESTAMP NULL DEFAULT NULL,
 	PRIMARY KEY (`id`),
-	KEY `todel` (`todel`),
-	KEY `fromdel` (`fromdel`),
 	KEY `timestamp` (`timestamp`),
 	KEY `to` (`to`),
 	KEY `from` (`from`),
