@@ -18,7 +18,7 @@
  */
 
 define( 'WEBIM_PRODUCT_NAME', 'discuzX' );
-
+define( 'DISABLEXSSCHECK', true );
 //discuzX1.5 will check url and report error when url content quote
 $_SERVER['REQUEST_URI'] = "";
 if ( !defined('IN_DISCUZ') ) {
