@@ -30,16 +30,14 @@ CREATE TABLE cdb_webim_histories (
 	PRIMARY KEY (`id`),
 	KEY `timestamp` (`timestamp`),
 	KEY `to` (`to`),
-	KEY `from` (`from`),
-	KEY `send` (`send`)
+	KEY `from` (`from`)
 ) ENGINE=MyISAM;
 
 DROP TABLE IF EXISTS cdb_webim_settings;
 CREATE TABLE cdb_webim_settings(
 	`id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
-	`uid` mediumint(8) unsigned NOT NULL,
-	`web` blob,
-	`air` blob,
+	`uid` int(11) unsigned NOT NULL,
+	`data` blob,
 	`created_at` TIMESTAMP NULL DEFAULT NULL,
 	`updated_at` TIMESTAMP NULL DEFAULT NULL,
 	PRIMARY KEY (`id`) 
