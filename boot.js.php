@@ -44,7 +44,8 @@ enable_noti: '<?php echo $_IMC['enable_noti'] ? "1" : "" ?>',
 theme: '<?php echo $_IMC['theme']; ?>',
 local: '<?php echo $_IMC['local']; ?>',
 upload: '<?php echo $_IMC['upload']; ?>',
-showUnavailable: '<?php echo $_IMC['show_unavailable']; ?>',
+show_unavailable: '<?php echo $_IMC['show_unavailable']; ?>',
+is_visitor: <?php echo $im_is_visitor ? 'true' : 'false' ?>,
 jsonp: '<?php echo $webim_jsonp ? "1" : "" ?>',
 min: window.location.href.indexOf("webim_debug") != -1 ? "" : ".min"
 };

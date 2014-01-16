@@ -109,6 +109,7 @@ function webim_set_visitor(){
 	$imuser->uid = "vid:".$id;
 	$imuser->id = "vid:".$id;
 	$imuser->nick = "v".$id;
+    $imuser->group = "visitor";
 	$imuser->pic_url = avatar($imuser->uid, 'small', true);
 	$imuser->show = webim_gp('show') ? webim_gp('show') : "available";
 	$imuser->url = "#";
@@ -165,31 +166,60 @@ foreach($friend_groups as $k => $v){
  *
  */
 function webim_get_online_buddies(){
-	global $friend_groups, $imuser, $im_is_visitor;
-	$list = array();
-	if( $im_is_visitor ) {
+	global $_IMC, $friend_groups, $imuser, $im_is_visitor;
+    $admins = array();
+	$buddies = array();
+    //addmins
+	if( $im_is_visitor or $_IMC['admin_as_buddy'] ) {
 		$query = DB::query("SELECT m.uid, m.username, p.realname name FROM ".DB::table('common_member')." m
 			LEFT JOIN ".DB::table('common_member_profile')." p
 			ON m.uid = p.uid 
 			WHERE allowadmincp = 1");
-	} else {
+        while ($value = DB::fetch($query)){
+            if($value['uid'] != $imuser->uid) {
+                $admins[] = (object)array(
+                    "uid" => $value['uid'],
+                    "id" => $value['username'],
+                    "nick" => nick($value),
+                    "group" => "manager",
+                    "url" => profile_url( $value['uid'] ),
+                    "pic_url" => avatar($value['uid'], 'small', true),
+                );
+            }
+        }
+
+	} 
+    //buddies
+    if( !$im_is_visitor ) {
 		$query = DB::query("SELECT f.fuid uid, f.fusername username, p.realname name, f.gid 
 			FROM ".DB::table('home_friend')." f, ".DB::table('common_member_profile')." p
 			WHERE f.uid='$imuser->uid' AND p.uid = f.uid 
 			ORDER BY f.num DESC, f.dateline DESC");
+        while ($value = DB::fetch($query)){
+            $uid = $value['uid'];
+            if( !webim_contain_uid($admins, $uid) ) {
+                $buddies[] = (object)array(
+                    "uid" => $uid,
+                    "id" => $value['username'],
+                    "nick" => nick($value),
+                    "group" => isset($value['gid']) && $value['gid'] ? $friend_groups[$value['gid']] : "manager",
+                    "url" => profile_url( $value['uid'] ),
+                    "pic_url" => avatar($value['uid'], 'small', true),
+                );
+            }
+        }
 	}
-	while ($value = DB::fetch($query)){
-		$list[] = (object)array(
-			"uid" => $value['uid'],
-			"id" => $value['username'],
-			"nick" => nick($value),
-			"group" => isset($value['gid']) && $value['gid'] ? $friend_groups[$value['gid']] : "manager",
-			"url" => profile_url( $value['uid'] ),
-			"pic_url" => avatar($value['uid'], 'small', true),
-		);
-	}
-	complete_status( $list );
-	return $list;
+
+    $rtlist = array_merge($admins, $buddies);
+	complete_status( $rtlist );
+	return $rtlist;
+}
+
+function webim_contain_uid($list, $uid) {
+    foreach($list as $u) {
+        if($u->uid == $uid) return true; 
+    }
+    return false;
 }
 
 /**
@@ -259,7 +289,7 @@ function webim_get_buddies( $names, $uids = null ){
 				"group" => "visitor",
 				"url" => "#",
 				"pic_url" => (webim_urlpath() . "static/images/chat.png"),
-				"status" => "网站访客", 
+				"status" => "访客" , 
 			);
 		}
 	}

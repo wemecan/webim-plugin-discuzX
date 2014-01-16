@@ -13,7 +13,8 @@ class plugin_nextalk {
 
 	function global_footer() {
 		global $_G;
-		return '<script src="source/plugin/nextalk/boot.js.php" type="text/javascript"></script>';
+        list($usec, $sec) = explode(" ", microtime());
+		return "<script src=\"source/plugin/nextalk/boot.js.php?ts=${sec}\" type=\"text/javascript\"></script>";
 	}
 }
 
