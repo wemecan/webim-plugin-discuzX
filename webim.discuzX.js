@@ -33,7 +33,8 @@
 		},
 		soundUrls: soundUrls,
 		buddyChatOptions: {
-			upload: _IMC.upload
+            downloadHistory: !_IMC.is_visitor,
+			upload: _IMC.upload && !_IMC.is_visitor
 		},
 		roomChatOptions: {
 			upload: _IMC.upload
@@ -48,6 +49,7 @@
 		showUnavailable: _IMC.show_unavailable,
 		is_login: _IMC['is_login'],
 		enable_login: true,
+        collapse: false,
         //simple: _IMC.is_visitor,
 		loginOptions: _IMC['login_options']
 	} );
