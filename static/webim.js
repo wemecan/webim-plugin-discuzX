@@ -5,8 +5,8 @@
  * Copyright (c) 2013 Arron
  * Released under the MIT, BSD, and GPL Licenses.
  *
- * Date: Fri Jan 10 21:26:30 2014 +0800
- * Commit: 6c4d6a83334b2bfde22e16fe87424f2f0749b6c8
+ * Date: Sun Jan 19 22:51:12 2014 +0800
+ * Commit: cd177fb0f6f884052ae5bb85514f45322a3957ea
  */
 (function(window, document, undefined){
 
@@ -1373,6 +1373,8 @@ extend(webim.prototype, {
 		self.data.user.presence = "offline";
 		self.data.user.show = "unavailable";
 		self.buddy.clear();
+		self.room.clear();
+		self.history.clean();
 		self.trigger("offline", [type, msg] );
 	},
 	autoOnline: function(){
@@ -1836,6 +1838,9 @@ model( "buddy", {
 			//Presence in [show,offline,online]
 			v.presence = v.presence == "offline" ? "offline" : "online";
 			v.incomplete = !dataHash[ v.id ];
+			if( !v.group && v.id ) {
+				v.group = v.id.indexOf("vid:") == 0 ? "visitor" : v.group;
+			}
 		}
 		self.set( data );
 	},
@@ -2045,6 +2050,9 @@ model( "buddy", {
 			}
 		},
 		clear:function(){
+			var self = this;
+			self.data = [];
+			self.dataHash = {};
 		}
 	} );
 } )();
@@ -2059,6 +2067,11 @@ model("history", {
 		self.data = self.data || {};
 		self.data.chat = self.data.chat || {};
 		self.data.grpchat = self.data.grpchat || {};
+	},
+	clean: function(){
+		var self = this;
+		self.data.chat = {};
+		self.data.grpchat = {};
 	},
 	get: function( type, id ) {
 		return this.data[type][id];
@@ -2151,8 +2164,8 @@ model("history", {
  * Copyright (c) 2013 Arron
  * Released under the MIT, BSD, and GPL Licenses.
  *
- * Date: Sun Jan 19 21:37:44 2014 +0800
- * Commit: ecb801d718332611c5afabaa3050f31014668aac
+ * Date: Sun Jan 19 23:20:30 2014 +0800
+ * Commit: b1a5d1300a6c5908292ef556bb3a75cc163b20ef
  */
 (function(window,document,undefined){
 
@@ -5657,6 +5670,16 @@ app("room", function( options ) {
 		info.blocked && (info.nick = nick + "(" + i18n("blocked") + ")");
 		roomUI.li[info.id] ? roomUI.update(info) : ( !ignore && roomUI.add(info) );
 	}
+	hide( roomUI.$.actions );
+	im.bind( "beforeOnline", function(){
+	}).bind("online", function() {
+		show( roomUI.$.actions );
+	}).bind( "offline", function( type, msg ) {
+		hide( roomUI.$.actions );
+		roomUI.removeAll();
+	});
+	return roomUI;
+
 });
 widget("room",{
 	template: '<div id="webim-room" class="webim-room webim-flex webim-box">\
