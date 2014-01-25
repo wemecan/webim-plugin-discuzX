@@ -50,7 +50,8 @@
 		showUnavailable: _IMC.show_unavailable,
 		is_login: _IMC['is_login'],
 		enable_login: true,
-        collapse: false,
+		collapse: false,
+		disable_user: _IMC.is_visitor,
         simple: _IMC.is_visitor,
 		loginOptions: _IMC['login_options']
 	} );
