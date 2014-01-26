@@ -1,5 +1,5 @@
 /*!
- * Webim v1.1.0
+ * Webim v5.1
  * http://www.webim20.cn/
  *
  * Copyright (c) 2013 Arron
@@ -1621,7 +1621,7 @@ function route( ob, val ) {
 window.webim = webim;
 
 extend( webim, {
-	version: "1.1.0",
+	version: "5.2",
 	defaults:{
 	},
 	log: log,
@@ -2164,8 +2164,8 @@ model("history", {
  * Copyright (c) 2013 Arron
  * Released under the MIT, BSD, and GPL Licenses.
  *
- * Date: Mon Jan 20 12:40:36 2014 +0800
- * Commit: 1c512668d4f3b4434160bf37deeeacf9d7f9b742
+ * Date: Sun Jan 26 09:06:04 2014 +0800
+ * Commit: 91fdef4db32b019f10691244a9919a31ac810410
  */
 (function(window,document,undefined){
 
@@ -5863,7 +5863,7 @@ widget("room",{
 		  , buddies = buddy.all(true);
 		self._discussion = info;
 		var $ = this.$;
-		$.name.value = info && info.nick.replace(/\([^\)]*\)/ig, "") || (self.options.user.nick + "的讨论组");
+		$.name.value = info && info.nick.replace(/\([^\)]*\)/ig, "") || (i18n("discussion name input", {name: self.options.user.nick}));
 		for (var i = 0; i < buddies.length; i++) {
 			var b = buddies[i];
 			markup.push('<li><label for="webim-discussion-'+b.id+'"><input id="webim-discussion-'+b.id+'" type="checkbox" name="buddy" value="'+b.id+'" />'+b.nick+'</label></li>');
