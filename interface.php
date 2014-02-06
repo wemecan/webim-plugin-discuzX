@@ -296,14 +296,19 @@ function webim_get_buddies( $names, $uids = null ){
 	complete_status( $list );
 
 	if( count( $visitors ) ) {
-		foreach ($visitors as $val) {
+		foreach ($visitors as $vid) {
+            $data = DB::fetch_first("SELECT location from ".DB::table('webim_visitors')." WHERE name = '$vid'");
+            $status = "访客";
+            if($data && $data['location']) {
+                $status = $status . $data['location'];
+            }
 			$list[] = (object)array(
-				"id" => $val,
-				"nick" => "v".substr($val, 4), //remove vid:
+				"id" => $vid,
+				"nick" => "v".substr($vid, 4), //remove vid:
 				"group" => "visitor",
 				"url" => "#",
 				"pic_url" => (webim_urlpath() . "static/images/chat.png"),
-				"status" => "访客" , 
+				"status" => $status, 
 			);
 		}
 	}
