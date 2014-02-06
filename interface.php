@@ -28,6 +28,7 @@ if ( !defined('IN_DISCUZ') ) {
 }
 require_once DISCUZ_ROOT . './source/function/function_friend.php';
 require_once DISCUZ_ROOT . './source/function/function_group.php';
+require_once DISCUZ_ROOT . './source/function/function_misc.php';
 
 
 //Find and insert data with utf8 client.
@@ -106,8 +107,21 @@ function webim_set_visitor(){
 		$id =  substr(uniqid(), 6);
 		setcookie('_webim_visitor_id', $id, time() + 3600 * 24 * 30, "/", "");
 	}
-	$imuser->uid = "vid:".$id;
-	$imuser->id = "vid:".$id;
+    $vid = "vid:".$id;
+    $data = DB::fetch_first("SELECT id from ".DB::table('webim_visitors')." WHERE name = '$vid'");
+    if( !($data && $data["id"]) ) {
+        //var_dump($_SERVER);
+        DB::insert('webim_visitors', array(
+            "name" => $vid,
+            "ipaddr" => $_SERVER["REMOTE_ADDR"],
+            "url" => $_SERVER['REQUEST_URI'],
+            "referer" => $_SERVER['HTTP_REFERER'],
+            "location" => convertip($_SERVER["REMOTE_ADDR"]),
+            "created_at" => date( 'Y-m-d H:i:s' ),
+        ));
+    }
+	$imuser->uid = $vid;
+	$imuser->id = $vid;
 	$imuser->nick = "v".$id;
     $imuser->group = "visitor";
 	$imuser->pic_url = avatar($imuser->uid, 'small', true);

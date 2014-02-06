@@ -1,6 +1,6 @@
 <?php
 
-$im_version = '@VERSION';
+$im_version = 'v5.2.2';
 
 if ( !defined( 'WEBIM_PATH' ) ) 
 	define( 'WEBIM_PATH', dirname( __FILE__ ) . '/' );
@@ -71,7 +71,7 @@ if ( version_compare($imdb->db_version(), '4.1.2', '<') ) {
 }
 
 $imdb->set_prefix( $_IMC['dbtable_prefix'] );
-$imdb->add_tables( array( 'webim_settings', 'webim_histories' ) );
+$imdb->add_tables( array( 'webim_settings', 'webim_histories', 'webim_visitors' ) );
 
 $imticket = webim_gp( 'ticket' );
 if( $imticket ) {
