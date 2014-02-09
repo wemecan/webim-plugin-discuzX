@@ -297,10 +297,10 @@ function webim_get_buddies( $names, $uids = null ){
 
 	if( count( $visitors ) ) {
 		foreach ($visitors as $vid) {
-            $data = DB::fetch_first("SELECT location from ".DB::table('webim_visitors')." WHERE name = '$vid'");
+            $data = DB::fetch_first("SELECT ipaddr, location from ".DB::table('webim_visitors')." WHERE name = '$vid'");
             $status = "访客";
             if($data && $data['location']) {
-                $status = $status . $data['location'];
+                $status = $status . $data['location'] . '(' . $data['ipaddr'] .')';
             }
 			$list[] = (object)array(
 				"id" => $vid,
