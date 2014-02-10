@@ -14,6 +14,7 @@ $sql = <<<EOF
 
 DROP TABLE cdb_webim_settings;
 DROP TABLE cdb_webim_histories;
+DROP TABLE cdb_webim_visitors;
 
 EOF;
 

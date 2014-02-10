@@ -43,6 +43,21 @@ CREATE TABLE cdb_webim_settings(
 	PRIMARY KEY (`id`) 
 )ENGINE=MyISAM;
 
+
+DROP TABLE IF EXISTS cdb_webim_visitors;
+CREATE TABLE cdb_webim_visitors (
+      `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+      `name` varchar(60) DEFAULT NULL,
+      `ipaddr` varchar(60) DEFAULT NULL,
+      `url` varchar(100) DEFAULT NULL,
+      `referer` varchar(100) DEFAULT NULL,
+      `location` varchar(100) DEFAULT NULL,
+      `created_at` datetime DEFAULT NULL,
+      PRIMARY KEY (`id`),
+      UNIQUE KEY `visitor_name` (`name`)
+)ENGINE=MyISAM;
+
+
 EOF;
 
 runquery($sql);

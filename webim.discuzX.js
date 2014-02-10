@@ -1,5 +1,5 @@
 //custom
-(function(webim){
+(function(webim) {
 	var path = _IMC.path;
 	webim.extend(webim.setting.defaults.data, _IMC.setting );
 	if( _IMC.is_visitor ) {
@@ -52,12 +52,12 @@
 	ui.addApp("buddy", {
 		showUnavailable: _IMC.show_unavailable,
 		is_login: _IMC['is_login'],
-		enable_login: true,
+		disable_login: true,
 		collapse: false,
 		disable_user: _IMC.is_visitor,
-        simple: _IMC.is_visitor,
+        //simple: _IMC.is_visitor,
 		loginOptions: _IMC['login_options']
-	} );
+	});
 
     if(!_IMC.is_visitor) {
         if( _IMC.enable_room )ui.addApp("room", { discussion: false });
