@@ -1,7 +1,10 @@
 //custom
 (function(webim) {
 	var path = _IMC.path;
-	webim.extend(webim.setting.defaults.data, _IMC.setting);
+	webim.extend(webim.setting.defaults.data, _IMC.setting );
+	if( _IMC.is_visitor ) {
+		webim.status.defaults.key = "_webim_v";
+	}
 
 	webim.route( {
 		online: path + "im.php?webim_action=online",
@@ -57,7 +60,7 @@
 	});
 
     if(!_IMC.is_visitor) {
-        if( _IMC.enable_room )ui.addApp("room", { discussion: false});
+        if( _IMC.enable_room )ui.addApp("room", { discussion: false });
         if( _IMC.enable_noti )ui.addApp("notification");
         if( _IMC.enable_chatlink )ui.addApp("chatlink", {
             space_href: [/mod=space&uid=(\d+)/i, /space\-uid\-(\d+)\.html$/i],
