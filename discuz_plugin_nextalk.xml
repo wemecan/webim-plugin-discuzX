@@ -2,14 +2,14 @@
 <root>
 	<item id="Title"><![CDATA[Discuz! Plugin]]></item>
 	<item id="Version"><![CDATA[X3.1,X3,X2.5,X2,X1.5,X1.5.1,X1]]></item>
-	<item id="Time"><![CDATA[2013-11-12 21:59]]></item>
+	<item id="Time"><![CDATA[2014-02-15 11:09]]></item>
 	<item id="Data">
 		<item id="plugin">
 			<item id="available"><![CDATA[1]]></item>
 			<item id="adminid"><![CDATA[0]]></item>
 			<item id="name"><![CDATA[NexTalk站内聊天]]></item>
 			<item id="identifier"><![CDATA[nextalk]]></item>
-			<item id="description"><![CDATA[简单、专业的DiscuzX社区站内聊天插件]]></item>
+			<item id="description"><![CDATA[简单专业的DiscuzX社区站内聊天插件]]></item>
 			<item id="datatables"><![CDATA[]]></item>
 			<item id="directory"><![CDATA[nextalk/]]></item>
 			<item id="copyright"><![CDATA[nextalk.im]]></item>
