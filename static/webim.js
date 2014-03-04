@@ -1,12 +1,12 @@
 /*!
- * Webim v5.2
+ * Webim v5.3
  * http://www.webim20.cn/
  *
  * Copyright (c) 2013 Arron
  * Released under the MIT, BSD, and GPL Licenses.
  *
- * Date: Sun Jan 26 21:19:29 2014 +0800
- * Commit: cc528aeb68260efa8f0c65fea9b835e35bdae3b9
+ * Date: Thu Feb 20 12:08:45 2014 +0800
+ * Commit: bcbb5a54e8a0cb03ae3930a572056bdb69a22ff6
  */
 (function(window, document, undefined){
 
@@ -292,6 +292,11 @@ function ajax( origSettings ) {
 		for( var key in origSettings ) {
 			s[ key ] = origSettings[ key ];
 		}
+	}
+
+	//Only GET when jsonp
+	if( s.dataType === "jsonp" ) {
+		s.type = "GET";
 	}
 
 	var jsonp, status, data, type = s.type.toUpperCase(), noContent = rnoContent.test(type), head, proxy, win = window, script;
@@ -1621,7 +1626,7 @@ function route( ob, val ) {
 window.webim = webim;
 
 extend( webim, {
-	version: "5.2",
+	version: "5.3",
 	defaults:{
 	},
 	log: log,
@@ -2164,8 +2169,8 @@ model("history", {
  * Copyright (c) 2013 Arron
  * Released under the MIT, BSD, and GPL Licenses.
  *
- * Date: Sun Jan 26 09:06:04 2014 +0800
- * Commit: 91fdef4db32b019f10691244a9919a31ac810410
+ * Date: Tue Mar 4 10:43:10 2014 +0800
+ * Commit: 76f72ce165ce2ad3f16adc143aeb46c7d9006f54
  */
 (function(window,document,undefined){
 
@@ -2650,7 +2655,7 @@ var sound = (function(){
 		init: function(urls){
 			extend(_urls, urls);
 			if(!window.Audio && navigator.userAgent.indexOf('MSIE') >= 0){
-				document.getElementById('webim-flashlib-c').innerHTML = '<bgsound id="webim-bgsound" src="#" loop="1">';
+				document.getElementById('webim-flashlib-c').innerHTML = '<bgsound id="webim-bgsound" src="#" autostart="true" loop="1">';
 			}
 			/*
 			 swfobject.embedSWF(_urls.lib + "?_" + new Date().getTime(), "webim-flashlib-c", "100", "100", "9.0.0", null, null, {
