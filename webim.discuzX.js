@@ -2,10 +2,10 @@
 (function(webim) {
 	var path = _IMC.path;
 	webim.extend(webim.setting.defaults.data, _IMC.setting );
-	if( _IMC.is_visitor ) {
-		webim.status.defaults.key = "_webim_v";
-	}
-
+    var cookie_key = "_webim_cookie_";
+	if( _IMC.is_visitor ) { cookie_key = "_webim_v_cookie_"; }
+    if( _IMC.user != "" ) { cookie_key = cookie_key + _IMC.user.id; }
+    webim.status.defaults.key = cookie_key;
 	webim.route( {
 		online: path + "im.php?webim_action=online",
 		offline: path + "im.php?webim_action=offline",

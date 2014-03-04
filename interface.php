@@ -184,7 +184,7 @@ function webim_get_online_buddies(){
     $admins = array();
 	$buddies = array();
     //addmins
-	if( $im_is_visitor or $_IMC['admin_as_buddy'] ) {
+	if( $_IMC['admin_as_buddy'] ) {
 		$query = DB::query("SELECT m.uid, m.username, p.realname name FROM ".DB::table('common_member')." m
 			LEFT JOIN ".DB::table('common_member_profile')." p
 			ON m.uid = p.uid 
@@ -202,7 +202,25 @@ function webim_get_online_buddies(){
             }
         }
 
-	} 
+    } 
+    if(isset($_IMC['admin_uids']) and $_IMC['admin_uids'] !== '') {
+		$query = DB::query("SELECT m.uid, m.username, p.realname name FROM ".DB::table('common_member')." m
+			LEFT JOIN ".DB::table('common_member_profile')." p
+			ON m.uid = p.uid 
+			WHERE m.uid in ({$_IMC['admin_uids']})");
+            while ($value = DB::fetch($query)){
+                if($value['uid'] != $imuser->uid and !webim_contain_uid($admins, $uid)) {
+                    $admins[] = (object)array(
+                        "uid" => $value['uid'],
+                        "id" => $value['username'],
+                        "nick" => nick($value),
+                        "group" => "manager",
+                        "url" => profile_url( $value['uid'] ),
+                        "pic_url" => avatar($value['uid'], 'small', true),
+                    );
+                }
+            }
+    }
     //buddies
     if( !$im_is_visitor ) {
 		$query = DB::query("SELECT f.fuid uid, f.fusername username, p.realname name, f.gid 
