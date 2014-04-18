@@ -60,7 +60,7 @@ class webim_plugin_discuzX extends webim_plugin {
             $id =  substr(uniqid(), 6);
             setcookie('_webim_visitor_id', $id, time() + 3600 * 24 * 30, "/", "");
         }
-        $vid = $this->_vid($id);
+        $vid = $this->vid($id);
         $data = DB::fetch_first("SELECT id from ".DB::table('webim_visitors')." WHERE name = '$vid'");
         $ip = isset($_SERVER['X-Forwarded-For']) ? $_SERVER['X-Forwarded-For'] : $_SERVER["REMOTE_ADDR"];
         $loc = convertip($ip);
