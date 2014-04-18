@@ -12,7 +12,7 @@
 if (version_compare( PHP_VERSION, '4.3', '<' ) ) {
 	die( sprintf( 'Your server is running PHP version %s but webim requires at least 4.3', PHP_VERSION ) );
 }
-
+define( 'DISABLEXSSCHECK', true );
 //NOTICE: discuzX1.5 will check url and report error when url content quote
 $_SERVER['REQUEST_URI'] = "";
 

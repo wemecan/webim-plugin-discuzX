@@ -92,6 +92,7 @@ class webim_plugin_discuzX extends webim_plugin {
      * buddies of current user.
      */
     public function buddies() {
+        global $IMC;
         $uid = $this->uid();
         $admins = array();
         $buddies = array();
@@ -100,13 +101,13 @@ class webim_plugin_discuzX extends webim_plugin {
             $query = DB::query("SELECT m.uid, m.username, p.realname name FROM ".DB::table('common_member')." m
                 LEFT JOIN ".DB::table('common_member_profile')." p
                 ON m.uid = p.uid 
-                WHERE allowadmincp = 1");
+                WHERE m.allowadmincp = 1");
             while ($value = DB::fetch($query)){
                 if($value['uid'] != $uid) {
                     $admins[] = (object)array(
                         "id" => $value['uid'],
                         "uid" => $value['uid'],
-                        "nick" => nick($value),
+                        "nick" => $this->nick($value),
                         "group" => "manager",
                         "url" => $this->profile_url( $value['uid'] ),
                         "pic_url" => avatar($value['uid'], 'small', true),
@@ -124,7 +125,7 @@ class webim_plugin_discuzX extends webim_plugin {
                         $admins[] = (object) array(
                             "id" => $value['uid'],
                             "uid" => $value['uid'],
-                            "nick" => nick($value),
+                            "nick" => $this->nick($value),
                             "group" => "manager",
                             "url" => $this->profile_url( $value['uid'] ),
                             "pic_url" => avatar($value['uid'], 'small', true),
