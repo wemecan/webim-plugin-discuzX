@@ -54,6 +54,7 @@ class webim_plugin_discuzX extends webim_plugin {
     }
 
 	protected function load_visitor() {
+        require_once 'lib/IP.class.php';
         if ( isset($_COOKIE['_webim_visitor_id']) ) {
             $id = $_COOKIE['_webim_visitor_id'];
         } else {
@@ -63,7 +64,7 @@ class webim_plugin_discuzX extends webim_plugin {
         $vid = $this->vid($id);
         $data = DB::fetch_first("SELECT id from ".DB::table('webim_visitors')." WHERE name = '$vid'");
         $ip = isset($_SERVER['X-Forwarded-For']) ? $_SERVER['X-Forwarded-For'] : $_SERVER["REMOTE_ADDR"];
-        $loc = convertip($ip);
+        $loc = implode('', IP::find($ip)),
         if( !($data && $data["id"]) ) {
             //var_dump($_SERVER);
             DB::insert('webim_visitors', array(
