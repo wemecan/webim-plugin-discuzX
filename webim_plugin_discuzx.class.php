@@ -30,7 +30,7 @@ class webim_plugin_discuzX extends webim_plugin {
 	}
 
 	protected function load_user($uid) {
-        global $_G;
+        global $_G, $IMC;
         $user = array();
         $user['id'] = $uid;
         $user['uid'] = $uid;
@@ -42,11 +42,12 @@ class webim_plugin_discuzX extends webim_plugin {
                 $u['nick'] = $data['realname'];
             }
         }
-        $user['pic_url'] = $this->avatar($uid, 'small', true);
+        $user['pic_url'] = avatar($uid, 'small', true);
         $user['url'] = $this->profile_url( $uid );
         $user['role'] = 'user';
+        $user = (object)$user;
         $this->complete_status( array( $user ) );
-        return (object)$user;
+        return $user;
     }
 
 	protected function load_visitor() {
@@ -282,22 +283,17 @@ class webim_plugin_discuzX extends webim_plugin {
      *
      */
     function complete_status( $members ) {
-        if(!empty($members)){
-            $num = count($members);
+        if( count($members) ){
             $ids = array();
-            $ob = array();
-            for($i = 0; $i < $num; $i++){
-                $m = $members[$i];
-                $id = $m->uid;
-                if ( $id ) {
-                    $ids[] = $id;
-                    $ob[$id] = $m;
-                }
+            $cache = array();
+            foreach($members as $m) {
+                $ids[] = $m->uid;
+                $cache[$m->uid] = $m;
             }
             $ids = implode(",", $ids);
             $query = DB::query("SELECT uid, spacenote FROM ".DB::table('common_member_field_home')." WHERE uid IN ($ids)");
-            while($res = DB::fetch($query)) {
-                $ob[$res['uid']]->status = $res['spacenote'];
+            while($row = DB::fetch($query)) {
+                $cache[$row['uid']]->status = $row['spacenote'];
             }
         }
         return $members;

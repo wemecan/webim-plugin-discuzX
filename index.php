@@ -70,7 +70,7 @@ if( !$IMC['isopen'] ) exit('WebIM Not Opened');
  */
 require 'lib/http_client.php';
 require 'lib/webim_client.class.php';
-require 'lib/webim_common.php';
+require 'lib/webim_common.func.php';
 require 'lib/webim_db.class.php';
 require 'lib/webim_model.class.php';
 require 'lib/webim_plugin.class.php';
