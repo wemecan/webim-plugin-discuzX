@@ -130,7 +130,7 @@ class webim_plugin_discuzX extends webim_plugin {
                 }
         }
         //buddies
-        if( !$this->is_vistiro() ) {
+        if( !$this->is_visitor() ) {
             $query = DB::query("SELECT f.fuid uid, f.fusername username, p.realname name, f.gid 
                 FROM ".DB::table('home_friend')." f, ".DB::table('common_member_profile')." p
                 WHERE f.uid='{$uid}' AND p.uid = f.uid 
