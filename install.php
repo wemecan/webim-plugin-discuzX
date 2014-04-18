@@ -12,51 +12,86 @@ if(!defined('IN_DISCUZ')) {
 
 $sql = <<<EOF
 
-DROP TABLE IF EXISTS cdb_webim_histories;
-CREATE TABLE cdb_webim_histories (
-	`id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-	`send` tinyint(1) DEFAULT NULL,
-	`type` varchar(20) DEFAULT NULL,
-	`to` varchar(50) NOT NULL,
-	`from` varchar(50) NOT NULL,
-	`nick` varchar(20) DEFAULT NULL COMMENT 'from nick',
-	`body` text,
-	`style` varchar(150) DEFAULT NULL,
-	`timestamp` double DEFAULT NULL,
-	`todel` tinyint(1) NOT NULL DEFAULT '0',
-	`fromdel` tinyint(1) NOT NULL DEFAULT '0',
-	`created_at` TIMESTAMP NULL DEFAULT NULL,
-	`updated_at` TIMESTAMP NULL DEFAULT NULL,
-	PRIMARY KEY (`id`),
-	KEY `timestamp` (`timestamp`),
-	KEY `to` (`to`),
-	KEY `from` (`from`)
-) ENGINE=MyISAM;
+DROP TABLE IF EXISTS `cdb_webim_settings`;
+CREATE TABLE `cdb_webim_settings` (
+	  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+	  `uid` varchar(40) NOT NULL DEFAULT '',
+	  `data` text,
+	  `created` datetime DEFAULT NULL,
+	  `updated` datetime DEFAULT NULL,
+      UNIQUE KEY `webim_setting_uid` (`uid`)
+	  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
-DROP TABLE IF EXISTS cdb_webim_settings;
-CREATE TABLE cdb_webim_settings(
-	`id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
-	`uid` int(11) unsigned NOT NULL,
-	`data` blob,
-	`created_at` TIMESTAMP NULL DEFAULT NULL,
-	`updated_at` TIMESTAMP NULL DEFAULT NULL,
-	PRIMARY KEY (`id`) 
-)ENGINE=MyISAM;
+DROP TABLE IF EXISTS `cdb_webim_histories`;
+CREATE TABLE `cdb_webim_histories` (
+	  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+	  `send` tinyint(1) DEFAULT NULL,
+	  `type` varchar(20) DEFAULT NULL,
+	  `to` varchar(50) NOT NULL,
+	  `from` varchar(50) NOT NULL,
+	  `nick` varchar(20) DEFAULT NULL COMMENT 'from nick',
+	  `body` text,
+	  `style` varchar(150) DEFAULT NULL,
+	  `timestamp` double DEFAULT NULL,
+	  `todel` tinyint(1) NOT NULL DEFAULT '0',
+	  `fromdel` tinyint(1) NOT NULL DEFAULT '0',
+	  `created` date DEFAULT NULL,
+	  `updated` date DEFAULT NULL,
+	  PRIMARY KEY (`id`),
+	  KEY `webim_history_timestamp` (`timestamp`),
+	  KEY `webim_history_to` (`to`),
+	  KEY `webim_history_from` (`from`),
+	  KEY `webim_history_send` (`send`)
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
+DROP TABLE IF EXISTS `cdb_webim_rooms`;
+CREATE TABLE `cdb_webim_rooms` (
+      `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+      `owner` varchar(40) NOT NULL,
+      `name` varchar(40) NOT NULL,
+      `nick` varchar(60) NOT NULL DEFAULT '',
+      `topic` varchar(60) DEFAULT NULL,
+      `url` varchar(100) DEFAULT '#',
+      `created` datetime DEFAULT NULL,
+      `updated` datetime DEFAULT NULL,
+      PRIMARY KEY (`id`),
+      UNIQUE KEY `webim_room_name` (`name`)
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
-DROP TABLE IF EXISTS cdb_webim_visitors;
-CREATE TABLE cdb_webim_visitors (
+DROP TABLE IF EXISTS `cdb_webim_members`;
+CREATE TABLE `cdb_webim_members` (
+      `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+      `room` varchar(60) NOT NULL,
+      `uid` varchar(40) NOT NULL,
+      `nick` varchar(60) NOT NULL,
+      `joined` datetime DEFAULT NULL,
+      PRIMARY KEY (`id`),
+      UNIQUE KEY `webim_member_room_uid` (`room`,`uid`)
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS `cdb_webim_blocked`;
+CREATE TABLE `cdb_webim_blocked` (
+      `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+      `room` varchar(60) NOT NULL,
+      `uid` varchar(40) NOT NULL,
+      `blocked` datetime DEFAULT NULL,
+      PRIMARY KEY (`id`),
+      UNIQUE KEY `webim_blocked_room_uid` (`uid`,`room`)
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS `cdb_webim_visitors`;
+CREATE TABLE `cdb_webim_visitors` (
       `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
       `name` varchar(60) DEFAULT NULL,
       `ipaddr` varchar(60) DEFAULT NULL,
       `url` varchar(100) DEFAULT NULL,
       `referer` varchar(100) DEFAULT NULL,
       `location` varchar(100) DEFAULT NULL,
-      `created_at` datetime DEFAULT NULL,
+      `created` datetime DEFAULT NULL,
       PRIMARY KEY (`id`),
-      UNIQUE KEY `visitor_name` (`name`)
-)ENGINE=MyISAM;
-
+      UNIQUE KEY `webim_visitor_name` (`name`)
+)ENGINE=MyISAM AUTO_INCREMENT=10000 DEFAULT CHARSET=utf8;
 
 EOF;
 

@@ -12,9 +12,12 @@ if(!defined('IN_DISCUZ')) {
 
 $sql = <<<EOF
 
-DROP TABLE cdb_webim_settings;
-DROP TABLE cdb_webim_histories;
-DROP TABLE cdb_webim_visitors;
+DROP TABLE IF EXISTS `cdb_webim_settings`;
+DROP TABLE IF EXISTS `cdb_webim_histories`;
+DROP TABLE IF EXISTS `cdb_webim_rooms`;
+DROP TABLE IF EXISTS `cdb_webim_members`;
+DROP TABLE IF EXISTS `cdb_webim_blocked`;
+DROP TABLE IF EXISTS `cdb_webim_visitors`;
 
 EOF;
 
