@@ -19,7 +19,7 @@ CREATE TABLE `cdb_webim_settings` (
 	  `data` text,
 	  `created` datetime DEFAULT NULL,
 	  `updated` datetime DEFAULT NULL,
-      UNIQUE KEY `webim_setting_uid` (`uid`)
+      UNIQUE KEY `webim_setting_uid` (`uid`),
 	  PRIMARY KEY (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 

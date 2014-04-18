@@ -21,7 +21,10 @@ class webim_plugin_discuzX extends webim_plugin {
         }
 	}
 
-    function webim_plugin_discuzX() {
+	/*
+	 * old constructor
+	 */
+    public function webim_plugin_discuzX() {
         $this->__construct();
     }
     
@@ -86,8 +89,7 @@ class webim_plugin_discuzX extends webim_plugin {
     }
 
     /**
-     * Online buddy list.
-     *
+     * buddies of current user.
      */
     public function buddies() {
         $uid = $this->uid();
@@ -112,11 +114,11 @@ class webim_plugin_discuzX extends webim_plugin {
                 }
             }
         } 
-        if(isset($_IMC['admin_uids']) and $_IMC['admin_uids'] !== '') {
+        if(isset($IMC['admin_uids']) and $IMC['admin_uids'] !== '') {
             $query = DB::query("SELECT m.uid, m.username, p.realname name FROM ".DB::table('common_member')." m
                 LEFT JOIN ".DB::table('common_member_profile')." p
                 ON m.uid = p.uid 
-                WHERE m.uid in ({$_IMC['admin_uids']})");
+                WHERE m.uid in ({$IMC['admin_uids']})");
                 while ($value = DB::fetch($query)){
                     if($value['uid'] != $uid and !$this->contain_uid($admins, $uid)) {
                         $admins[] = (object) array(
@@ -139,9 +141,9 @@ class webim_plugin_discuzX extends webim_plugin {
             while ($value = DB::fetch($query)){
                 if( !$this->contain_uid($admins, $value['uid']) ) {
                     $buddies[] = (object)array(
-                        "id" => $uid,
-                        "uid" => $uid,
-                        "nick" => nick($value),
+                        "id" => $value['uid'],
+                        "uid" => $value['uid'],
+                        "nick" => $this->nick($value),
                         "group" => isset($value['gid']) && $value['gid'] ? $friend_groups[$value['gid']] : "manager",
                         "url" => $this->profile_url( $value['uid'] ),
                         "pic_url" => avatar($value['uid'], 'small', true),
@@ -163,11 +165,11 @@ class webim_plugin_discuzX extends webim_plugin {
     }
 
     /**
-     * Get buddy list from given ids
+     * buddies list from given ids
      * $ids:
      *
      * Example:
-     * 	buddy('admin,webim,test');
+     * 	buddy_by_ids(array(1,2,3));
      *
      */
     function buddies_by_ids($ids){
@@ -238,7 +240,7 @@ class webim_plugin_discuzX extends webim_plugin {
         while ($value = DB::fetch($query)){
             $ids[] = $value['fid'];
         }
-        return rooms_by_ids($ids);
+        return $this->rooms_by_ids($ids);
     }
 
     /**
@@ -271,7 +273,19 @@ class webim_plugin_discuzX extends webim_plugin {
         return $rooms;
     }
 
-    function notifications(){
+    public function members($room) {
+        $query = DB::query("SELECT uid, username FROM ". DB::table("forum_groupuser")." WHERE fid=$room");
+        $members = array();
+        while ( $value = DB::fetch($query) ){
+            $members[] = (object) array(
+                'id' => $value['uid'],
+                'nick' => $value['username']
+            );
+        }
+        return $members;
+    }
+
+    public function notifications(){
         return array();
     }
     

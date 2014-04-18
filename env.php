@@ -4,7 +4,7 @@ define('DISABLEXSSCHECK', true );
 
 define('WEBIM_VERSION', '5.4');
 
-define('WEBIMDB_DEBUG', true);
+//define('WEBIMDB_DEBUG', false);
 
 define('WEBIM_PRODUCT', 'discuzX' );
 
