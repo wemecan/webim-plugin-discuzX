@@ -78,7 +78,7 @@
             link_wrap: document.getElementById("ct")
         });
     }
-    ui.addApp("setting", {"data": webim.setting.defaults.data});
+    ui.addApp("setting", {"data": webim.setting.defaults.data, "copyright": true});
 	ui.render();
 	_IMC['is_login'] && im.autoOnline() && im.online();
 })(webim);
