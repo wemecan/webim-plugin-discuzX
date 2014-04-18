@@ -216,7 +216,7 @@ class webim_plugin_discuzX extends webim_plugin {
         if( count( $vids) ) {
             foreach ($vids as $vid) {
                 $data = DB::fetch_first("SELECT ipaddr, location from ".DB::table('webim_visitors')." WHERE name = '$vid'");
-                $status = "访客";
+                $status = '';
                 if($data && $data['location']) {
                     $status = $status . $data['location'] . '(' . $data['ipaddr'] .')';
                 }
