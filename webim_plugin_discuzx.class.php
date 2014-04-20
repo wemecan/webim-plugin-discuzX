@@ -141,7 +141,7 @@ class webim_plugin_discuzX extends webim_plugin {
         } else {
             $query = DB::query("SELECT m.uid, m.username, p.realname name, f.gid FROM ".DB::table('common_member')." m
             LEFT JOIN ".DB::table('home_friend')." f 
-            ON f.fuid = m.uid AND f.uid = {$this->uid()} 
+            ON f.fuid = m.uid AND f.uid = {$uid} 
             LEFT JOIN ".DB::table('common_member_profile')." p
             ON m.uid = p.uid 
             WHERE m.uid <> {$uid} AND $where_in");
@@ -149,7 +149,6 @@ class webim_plugin_discuzX extends webim_plugin {
         while ( $value = DB::fetch( $query ) ){
             $buddies[] = (object)array(
                 "id" => $value['uid'],
-                "uid" => $value['uid'],
                 "nick" => $this->nick($value),
                 "group" => isset($value['gid']) && $value['gid'] ? $friend_groups[$value['gid']] : "stranger",
                 "url" => $this->profile_url( $value['uid'] ),
@@ -160,7 +159,7 @@ class webim_plugin_discuzX extends webim_plugin {
         return $buddies;
     }
 
-    public function rooms($uid) {
+    function rooms($uid) {
         if( webim_isvid($uid) ) return array();
         $ids = array();
         $query = DB::query("SELECT fid FROM ".DB::table("forum_groupuser")." WHERE uid=$uid");
@@ -176,7 +175,7 @@ class webim_plugin_discuzX extends webim_plugin {
      *
      */
     function rooms_by_ids($uid, $ids){
-        if( webim_isvid9($uid)  ) return array();
+        if( webim_isvid($uid)  ) return array();
         $rooms = array();
         $ids = "'".implode("','", $ids)."'";
         $where = "f.fid IN ($ids)";
@@ -199,7 +198,7 @@ class webim_plugin_discuzX extends webim_plugin {
         return $rooms;
     }
 
-    public function members($room) {
+    function members($room) {
         $query = DB::query("SELECT uid, username FROM ". DB::table("forum_groupuser")." WHERE fid=$room");
         $members = array();
         while ( $value = DB::fetch($query) ){
@@ -230,8 +229,8 @@ class webim_plugin_discuzX extends webim_plugin {
             $ids = array();
             $cache = array();
             foreach($members as $m) {
-                $ids[] = $m->uid;
-                $cache[$m->uid] = $m;
+                $ids[] = $m->id;
+                $cache[$m->id] = $m;
             }
             $ids = implode(",", $ids);
             $query = DB::query("SELECT uid, spacenote FROM ".DB::table('common_member_field_home')." WHERE uid IN ($ids)");
