@@ -21,7 +21,7 @@ function webim_scan_subdir( $dir ){
 
 //$sl = $scriptlang['webim'];
 //$tl = $templatelang['webim'];
-$tl = $scriptlang['webim'];
+$tl = $scriptlang['nextalk'];
 $notice = "";
 
 if($_G['gp_theme']){
