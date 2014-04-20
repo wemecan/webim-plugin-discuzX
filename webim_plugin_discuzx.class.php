@@ -28,7 +28,7 @@ class webim_plugin_discuzX extends webim_plugin {
     
     function user() {
         global $_G, $IMC; 
-        if( !isset($_G['uid']) ) return null;
+        if( !$_G['uid'] ) return null;
 
         //load user
         $uid = $_G['uid'];
