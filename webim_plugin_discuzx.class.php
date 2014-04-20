@@ -131,8 +131,13 @@ class webim_plugin_discuzX extends webim_plugin {
      */
     function buddies_by_ids($uid, $ids){
         if( count($ids) === 0 ) return array();
+        $uids = array();
+        foreach($ids as $id) {
+            if( !webim_isvid($id) ) $uids[] = $id;
+        }
+        if( count($uids) === 0) return array();
         $buddies  = array();
-        $where_in = 'm.uid IN (' . implode(',', $ids) . ')';
+        $where_in = 'm.uid IN (' . implode(',', $uids) . ')';
         if( webim_isvid($uid) ) {
             $query = DB::query("SELECT m.uid, m.username, p.realname name FROM ".DB::table('common_member')." m
             LEFT JOIN ".DB::table('common_member_profile')." p
