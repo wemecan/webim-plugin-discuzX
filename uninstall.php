@@ -1,14 +1,6 @@
 <?php
 
-/**
- * Author: Hidden
- * Date: Mon Aug 23 21:27:07 CST 2010
- *
- */
-
-if(!defined('IN_DISCUZ')) {
-	exit('Access Denied');
-}
+defined('IN_DISCUZ') or exit('Access Denied');
 
 $sql = <<<EOF
 

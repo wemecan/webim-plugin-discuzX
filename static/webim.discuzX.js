@@ -42,6 +42,9 @@
 		},
 		soundUrls: soundUrls,
 		//layout: "layout.popup",
+        layoutOptions: {
+            unscalable: _IMC.is_visitor
+        },
 		buddyChatOptions: {
             downloadHistory: !_IMC.is_visitor,
 			//simple: _IMC.is_visitor,

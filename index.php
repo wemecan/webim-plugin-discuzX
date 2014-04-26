@@ -51,14 +51,14 @@ $IMC['dbprefix'] = $_dbconfig['tablepre'] . 'webim_';
 unset( $_dbconfig );
 
 if($IMC['debug']) {
-    define(WEBIM_DEBUG, true);
+    define('WEBIM_DEBUG', true);
 } else {
-    define(WEBIM_DEBUG, false);
+    define('WEBIM_DEBUG', false);
 }
 
 // Modify error reporting levels to exclude PHP notices
-if( WEBIM_DEBUG ) {
-	error_reporting( -1 );
+if( defined('WEBIM_DEBUG') && WEBIM_DEBUG ) {
+	error_reporting( E_ALL );
 } else {
 	error_reporting( E_ALL & ~E_NOTICE & ~E_STRICT );
 }
