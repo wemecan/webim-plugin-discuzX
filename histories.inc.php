@@ -18,7 +18,7 @@ define(WEBIMDB_DEBUG, true);
 
 //$sl = $scriptlang['webim'];
 //$tl = $templatelang['webim'];
-$tl = $scriptlang['nextalk'];
+$tl = $scriptlang['webim'];
 $notice = "";
 
 $_dbcfg = $_G['config']['db'][1];
@@ -47,7 +47,7 @@ $count = $imdb->get_var( $imdb->prepare( "SELECT count(id)  as count FROM $imdb-
 //showtips($tl['histories_tips']);
 $t = $tl['histories_num'] ? $tl['histories_num'] : "The number of histories";
 echo "<p>$t: $count</p>";
-showformheader('plugins&operation=config&do='.$pluginid.'&identifier=nextalk&pmod=histories');
+showformheader('plugins&operation=config&do='.$pluginid.'&identifier=webim&pmod=histories');
 showtableheader();
 
 $clear_all = $tl['clear_all'] ? $tl['clear_all'] : "Clear up all histories";

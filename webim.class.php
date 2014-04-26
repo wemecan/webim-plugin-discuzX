@@ -7,12 +7,12 @@
  */
 defined('IN_DISCUZ') or exit('Access Denied');
 
-class plugin_nextalk {
+class plugin_webim {
 
 	function global_footer() {
 		global $_G;
         list($usec, $sec) = explode(" ", microtime());
-		return "<script src=\"source/plugin/nextalk/index.php?action=boot&ts=${sec}\" type=\"text/javascript\"></script>";
+		return "<script src=\"source/plugin/webim/index.php?action=boot&ts=${sec}\" type=\"text/javascript\"></script>";
 	}
 
 }

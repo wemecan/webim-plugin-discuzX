@@ -8,10 +8,10 @@
 			<item id="available"><![CDATA[1]]></item>
 			<item id="adminid"><![CDATA[0]]></item>
 			<item id="name"><![CDATA[NexTalk站内聊天]]></item>
-			<item id="identifier"><![CDATA[nextalk]]></item>
+			<item id="identifier"><![CDATA[webim]]></item>
 			<item id="description"><![CDATA[简单专业的DiscuzX社区站内聊天插件]]></item>
 			<item id="datatables"><![CDATA[]]></item>
-			<item id="directory"><![CDATA[nextalk/]]></item>
+			<item id="directory"><![CDATA[webim/]]></item>
 			<item id="copyright"><![CDATA[nextalk.im]]></item>
 			<item id="version"><![CDATA[@VERSION]]></item>
 			<item id="__modules">
@@ -24,7 +24,7 @@
 					<item id="displayorder"><![CDATA[0]]></item>
 				</item>
 				<item id="1">
-					<item id="name"><![CDATA[nextalk]]></item>
+					<item id="name"><![CDATA[webim]]></item>
 					<item id="menu"><![CDATA[]]></item>
 					<item id="url"><![CDATA[]]></item>
 					<item id="type"><![CDATA[11]]></item>
