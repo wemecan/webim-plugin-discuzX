@@ -2198,8 +2198,8 @@ model("history", {
  * Copyright (c) 2013 Arron
  * Released under the MIT, BSD, and GPL Licenses.
  *
- * Date: Fri Apr 18 16:33:45 2014 +0800
- * Commit: f624aa19f33d55e469361fbc5615a7d8e6f99c88
+ * Date: Wed May 21 18:04:58 2014 +0800
+ * Commit: 3dbd3f28a3772e87189315c1ab25c53bc39dc5a4
  */
 (function(window,document,undefined){
 
@@ -3217,7 +3217,8 @@ widget("window", {
 
 		each(["minimize", "maximize", "close", "tabClose"], function(n,v){
 			addEvent($[v], "click", function(e){
-				if(!this.disabled)self[v]();
+				//Different the element `disabled` attr
+				if(!this.disable)self[v]();
 				stop(e);
 			});
 			addEvent($[v],"mousedown",stop);
@@ -3596,7 +3597,7 @@ widget("layout",{
 	buildUI: function(e){
 		var self = this, $ = self.$;
 		//var w = self.element.width() - $.shortcut.outerWidth() - $.widgets.outerWidth() - 55;
-		var w = (windowWidth() - 45) - $.shortcut.offsetWidth - $.widgets.offsetWidth - 70;
+		var w = (windowWidth() - 45) - $.shortcut.offsetWidth - $.widgets.offsetWidth - 70 - 105;
 		self.maxVisibleTabs = parseInt(w / self.tabWidth);
 		self._fitUI();
 		if( !self.options.disableResize )
@@ -4176,38 +4177,39 @@ widget("emot", {
 });
 extend(webimUI.emot, {
         emots: [
-                {"t":"smile","src":"smile.png","q":[":)"]},
-                {"t":"smile_big","src":"smile-big.png","q":[":d",":-d",":D",":-D"]},
-                {"t":"sad","src":"sad.png","q":[":(",":-("]},
-                {"t":"wink","src":"wink.png","q":[";)",";-)"]},
-                {"t":"tongue","src":"tongue.png","q":[":p",":-p",":P",":-P"]},
-                {"t":"shock","src":"shock.png","q":["=-O","=-o"]},
-                {"t":"kiss","src":"kiss.png","q":[":-*"]},
-                {"t":"glasses_cool","src":"glasses-cool.png","q":["8-)"]},
-                {"t":"embarrassed","src":"embarrassed.png","q":[":-["]},
-                {"t":"crying","src":"crying.png","q":[":'("]},
-                {"t":"thinking","src":"thinking.png","q":[":-\/",":-\\"]},
-                {"t":"angel","src":"angel.png","q":["O:-)","o:-)"]},
-                {"t":"shut_mouth","src":"shut-mouth.png","q":[":-X",":-x"]},
-                {"t":"moneymouth","src":"moneymouth.png","q":[":-$"]},
-                {"t":"foot_in_mouth","src":"foot-in-mouth.png","q":[":-!"]},
-                {"t":"shout","src":"shout.png","q":[">:o",">:O"]}
+                {"t":"smile","src":"smile","q":[":)"]},
+                {"t":"smile_big","src":"smile-big","q":[":d",":-d",":D",":-D"]},
+                {"t":"sad","src":"sad","q":[":(",":-("]},
+                {"t":"wink","src":"wink","q":[";)",";-)"]},
+                {"t":"tongue","src":"tongue","q":[":p",":-p",":P",":-P"]},
+                {"t":"shock","src":"shock","q":["=-O","=-o"]},
+                {"t":"kiss","src":"kiss","q":[":-*"]},
+                {"t":"glasses_cool","src":"glasses-cool","q":["8-)"]},
+                {"t":"embarrassed","src":"embarrassed","q":[":-["]},
+                {"t":"crying","src":"crying","q":[":'("]},
+                {"t":"thinking","src":"thinking","q":[":-\/",":-\\"]},
+                {"t":"angel","src":"angel","q":["O:-)","o:-)"]},
+                {"t":"shut_mouth","src":"shut-mouth","q":[":-X",":-x"]},
+                {"t":"moneymouth","src":"moneymouth","q":[":-$"]},
+                {"t":"foot_in_mouth","src":"foot-in-mouth","q":[":-!"]},
+                {"t":"shout","src":"shout","q":[">:o",">:O"]}
         ],
         init: function(options){
             var emot = webim.ui.emot, q = emot._q = {};
             options = extend({
-                dir: 'webim/static/emot/default'
+                dir: 'webim/static/emot/default',
+                ext: 'png'
             }, options);
             if (options.emots) 
                 emot.emots = options.emots;
             var dir = options.dir + "/";
+            var ext = options.ext;
             each(emot.emots, function(key, v){
                 if (v && v.src) 
-                    v.src = dir + v.src;
+                    v.src = dir + v.src + '.' + ext;
                 v && v.q &&
                 each(v.q, function(n, val){
                     q[val] = key;
-
                 });
 
             });
@@ -4423,9 +4425,6 @@ widget("chat",{
 	<div id=":tools" class="webim-chat-tools ui-helper-clearfix ui-state-default"></div>\
 	<table class="webim-chat-t" cellSpacing="0"> \
 	<tr> \
-	<td style="vertical-align:top;"> \
-	<em class="webim-icon webim-icon-chat-edit"></em>\
-	</td> \
 	<td style="vertical-align:top;width:100%;"> \
 	<div class="webim-chat-input-wrap">\
 	<textarea id=":input" class="webim-chat-input webim-gray ui-widget-content"><%=input notice%></textarea> \
@@ -4843,7 +4842,8 @@ extend(webimUI.chat.prototype, {
 		var el = createElement('<li><a class="'+ (disable ? 'ui-state-disabled' : '') +'" href="'+ id +'">'+ nick +'</a></li>');
 		addEvent(el.firstChild,"click",function(e){
 			preventDefault(e);
-			disable || self.trigger("select", [{id: id, nick: nick}]);
+            //5.4.2 fixec: disable || 
+			self.trigger("select", [{id: id, nick: nick}]);
 		});
 		li[id] = el;
 		self.$.member.appendChild(el);
@@ -5281,11 +5281,12 @@ app("buddy", function( options ){
 	//some buddies online.
 	buddy.bind("online", function( e, data) {
 		if ( options.showUnavailable ) {
-            buddyUI.add(data);
+			buddyUI.remove(map(data, mapId));
+            buddyUI.add(data); //begin
         } else {
             buddyUI.add(grep(data, grepVisible));
         }
-		buddyUI.update(data);
+		//buddyUI.update(data);
 	});
 	//some buddies offline.
 	buddy.bind("offline", function( e, data){
@@ -5597,7 +5598,14 @@ self.trigger("offline");
 			}
 			if(group.count == 0) show(group.el);
 			li_group[id] = group;
-			group.li.appendChild(el);
+
+            //NOTICE: 5.4.3 fix, online buddies are on front...
+            if(self.isOnline(info.show)) {
+                group.li.insertBefore(el, group.li.firstChild);
+            } else {
+                group.li.appendChild(el);
+            }
+
 			group.count++;
             self.groupTitleCount(group);
 		}
@@ -5610,9 +5618,9 @@ self.trigger("offline");
         //added in 5.4... count online
         var show = info.show || "available";
         var group_name = i18n(info.group || "friend");
+        self.presences[info.id] = {o: self.isOnline(show), g: group_name};
         var group = self.groups[group_name];
         if(group) { self.groupTitleCount(group); }
-        self.presences[info.id] = {o: self.isOnline(show), g: group_name};
 	},
 	update: function(data){
 		data = makeArray(data);

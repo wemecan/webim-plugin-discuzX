@@ -5,8 +5,8 @@
  * Copyright (c) 2013 Arron
  * Released under the MIT, BSD, and GPL Licenses.
  *
- * Date: Fri Apr 18 16:33:45 2014 +0800
- * Commit: f624aa19f33d55e469361fbc5615a7d8e6f99c88
+ * Date: Wed May 21 18:04:58 2014 +0800
+ * Commit: 3dbd3f28a3772e87189315c1ab25c53bc39dc5a4
  */
 
 body {
@@ -519,6 +519,9 @@ a .webim-icon, a .ui-icon{
         width: 19.7em;
 }
 
+.webim-layout .webim-panels .webim-window-normal .webim-window-tab {
+    width: 19.85em !important;
+}
 
 .webim-layout .webim-buddy-window .webim-window-tab{
         width: 16em;
@@ -676,12 +679,12 @@ a .webim-icon, a .ui-icon{
 }
 
 .webim .webim-chat-content{
-	height: 16em;
+	height: 20em;
 	position: relative;
 }
 
 .webim .webim-chat-main{
-	height: 16em; 
+	height: 20em; 
 	overflow-y: auto;
 	overflow-x: hidden;
 	*background: url(about:blank);
@@ -1476,3 +1479,14 @@ a .webim-icon, a .ui-icon{
 	-webkit-box-shadow:0 10px 20px rgba(0, 0, 0, 0.4);
 }
 
+/*discuz X1*/
+#pcd .webim-chatlink{
+	padding-left: 0;
+	background-position: -30px 0;
+}
+
+/*discuz X1.5*/
+#pcd .ul_list .webim-chatlink{
+	background-position: 0px center;
+	padding-left: 20px;
+}
