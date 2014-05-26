@@ -186,7 +186,7 @@ $IMC["enable_noti"] = true;
 
 $query = DB::query("SELECT v.* FROM ".DB::table('common_pluginvar')." v, 
 	".DB::table('common_plugin')." p 
-	WHERE p.identifier='nextalk' AND v.pluginid = p.pluginid");
+	WHERE p.identifier='webim' AND v.pluginid = p.pluginid");
 while($var = DB::fetch($query)){
 	if(isset($var['value'])){
 		$IMC[$var['variable']] = empty( $var['value'] ) ? false : $var['value'];

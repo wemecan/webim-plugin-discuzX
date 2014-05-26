@@ -68,6 +68,9 @@ if( !$IMC['isopen'] ) exit('WebIM Not Opened');
 /**
  * load libraries
  */
+if( $IMC['visitor'] ) {
+    require 'lib/GeoIP.class.php';
+} 
 require 'lib/http_client.php';
 require 'lib/webim_client.class.php';
 require 'lib/webim_common.func.php';
