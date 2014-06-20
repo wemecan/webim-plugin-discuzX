@@ -41,7 +41,7 @@ class webim_plugin_discuzX extends webim_plugin {
                 $u['nick'] = $data['realname'];
             }
         }
-        $user['pic_url'] = avatar($uid, 'small', true);
+        $user['avatar'] = avatar($uid, 'small', true);
         $user['url'] = $this->profile_url( $uid );
         $user = (object)$user;
         $this->complete_status( array( $user ) );
@@ -68,7 +68,7 @@ class webim_plugin_discuzX extends webim_plugin {
                         "nick" => $this->nick($value),
                         "group" => "manager",
                         "url" => $this->profile_url( $value['uid'] ),
-                        "pic_url" => avatar($value['uid'], 'small', true),
+                        "avatar" => avatar($value['uid'], 'small', true),
                     );
                 }
             }
@@ -85,7 +85,7 @@ class webim_plugin_discuzX extends webim_plugin {
                             "nick" => $this->nick($value),
                             "group" => "manager",
                             "url" => $this->profile_url( $value['uid'] ),
-                            "pic_url" => avatar($value['uid'], 'small', true),
+                            "avatar" => avatar($value['uid'], 'small', true),
                         );
                     }
                 }
@@ -103,7 +103,7 @@ class webim_plugin_discuzX extends webim_plugin {
                         "nick" => $this->nick($value),
                         "group" => isset($value['gid']) && $value['gid'] ? $friend_groups[$value['gid']] : "manager",
                         "url" => $this->profile_url( $value['uid'] ),
-                        "pic_url" => avatar($value['uid'], 'small', true),
+                        "avatar" => avatar($value['uid'], 'small', true),
                     );
                 }
             }
@@ -157,7 +157,7 @@ class webim_plugin_discuzX extends webim_plugin {
                 "nick" => $this->nick($value),
                 "group" => isset($value['gid']) && $value['gid'] ? $friend_groups[$value['gid']] : "stranger",
                 "url" => $this->profile_url( $value['uid'] ),
-                "pic_url" => avatar($value['uid'], 'small', true),
+                "avatar" => avatar($value['uid'], 'small', true),
             );
         }
         $this->complete_status( $buddies );
@@ -193,7 +193,7 @@ class webim_plugin_discuzX extends webim_plugin {
                 "id" => $value['fid'],
                 "nick" => $value['name'],
                 "url" => $this->site_url() . "forum.php?mod=group&fid=".$value['fid'],
-                "pic_url" => $this->site_url() . get_groupimg($value['icon'], 'icon'),
+                "avatar" => $this->site_url() . get_groupimg($value['icon'], 'icon'),
                 "status" => $value['description'],
                 "count" => 0,
                 "all_count" => $value['membernum'],
