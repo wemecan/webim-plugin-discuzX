@@ -251,7 +251,7 @@ class webim_plugin_discuzX extends webim_plugin {
     }
 
     function profile_url( $id ) {
-        return $this->site_url() . "home.php?mod=space&uid=" . $id;
+        return $this->site_url() . "/home.php?mod=space&uid=" . $id;
     }
 
     function nick($sp) {
