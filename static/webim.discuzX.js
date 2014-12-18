@@ -44,7 +44,8 @@
 		//layout: "layout.popup",
         layoutOptions: {
             unscalable: _IMC.is_visitor,
-            detachable: true
+            //detachable: true, //true
+            maximizable: true
         },
 		buddyChatOptions: {
             downloadHistory: !_IMC.is_visitor,
@@ -82,6 +83,7 @@
             link_wrap: document.getElementById("ct")
         });
     }
+    ui.addApp("chatbtn", {wrap: document.body});
     ui.addApp("setting", {"data": webim.setting.defaults.data, "copyright": true});
 	ui.render();
 	_IMC['is_login'] && im.autoOnline() && im.online();
